@@ -1,5 +1,5 @@
 ### Step1: Create a sheet
-Make a copy of example sheet, save to your account: https://docs.google.com/spreadsheets/d/1GPLSSSAMv-NBL6CYHbaZ0UiOm-tAkGlWanolhGnAqWc/edit?usp=sharing
+Make a copy of [example sheet](https://docs.google.com/spreadsheets/d/1GPLSSSAMv-NBL6CYHbaZ0UiOm-tAkGlWanolhGnAqWc/edit?usp=sharing), save to your account
 
 ### Step2: Create the app token
 MenuBar -> Extensions -> Apps Script
