@@ -1,0 +1,18 @@
+{
+  "en": {
+    "cloud": "Set Cloud Token",
+    "entertoken": "Enter Your token",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "ch": {
+    "cloud": "云传输代码",
+    "entertoken": "请输入你的代码",
+    "close": "关闭",
+    "save": "保存",
+    "delete": "删除",
+    "cancel": "取消"
+  }
+}
