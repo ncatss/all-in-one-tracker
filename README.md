@@ -1,4 +1,4 @@
-# life-tracker
+# all-in-one-tracker
 it's a centralized place that tracks daily things like restaurant visits, pet flee & tick, flight start/end time, reservation code etc
 
 I started doing this because I like to record everything - and I wanted a centralized spot for myself to find everything
