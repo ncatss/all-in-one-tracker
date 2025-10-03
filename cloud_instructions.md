@@ -16,10 +16,10 @@ MenuBar -> Deploy (top right corner)
 
 -> hit Deploy
 -> hit Authorize access
--> go through steps to log in etc
+-> go through steps to log in, authorize, trust yourself as the developer etc
 
 ### Step4: Get Token to use
-you should be given a URL link that ends with `exec`: 
+you should be given a development id that you can copy, also a URL link(not needed) that ends with `exec` that you can find your id as well: 
 ```https://script.google.com/macros/s/YOUR_TOKEN/exec```
 
 you can also find the token in Deploy -> Manage deployment -> Deployment ID (Copy)
