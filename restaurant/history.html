@@ -105,14 +105,14 @@
     </label>
     <br /><br />
     <label>Note:
-      <textarea id="editNote" rows="3" placeholder="Optional note..."></textarea>
+      <textarea class="styled-textarea" id="editNote" rows="3" placeholder="Optional note..."></textarea>
     </label>
     <br /><br />
     <button onclick="submitEdit()">Save</button>
     <button onclick="closeEditModal()">Cancel</button>
   </div>
 
-  <div id="noteModal" class="modal" style="display:none;">
+  <div id="noteModal" class="modal">
     <div class="modal-content">
       <span id="closeNoteModal" class="close-button">&times;</span>
       <h3>Note</h3>
@@ -227,7 +227,7 @@
 
       noteTextElement.textContent = noteText;
 
-      modal.style.display = "block";
+      modal.style.display = "flex";
 
       closeButton.onclick = () => {
         modal.style.display = "none";
