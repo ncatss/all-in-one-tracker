@@ -155,6 +155,17 @@ textarea, input, select {
   font-family: sans-serif;
 }
 
+.form-row {
+  display: flex;          /* label + input inline */
+  align-items: left;
+  margin-bottom: 12px;    /* spacing between rows */
+}
+
+.form-row label {
+  margin-right: 10px; /* just small padding */
+  width: auto;       /* remove fixed width */
+}
+
 .cancel-btn {
   position: absolute;
   top: 10px;
@@ -175,6 +186,17 @@ textarea, input, select {
   position: fixed;
   top: 10px;
   left: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  z-index: 1001; /* higher than modal’s 999 */
+}
+
+.toprightbutton {
+  position: fixed;
+  top: 10px;
+  right: 10px;
   font-size: 16px;
   cursor: pointer;
   background: none;
@@ -204,4 +226,11 @@ textarea, input, select {
   padding: 8px 12px;
   margin-bottom: 16px;
   box-sizing: border-box;
+}
+
+.help-text {
+  white-space: pre-wrap;       /* preserve line breaks */
+  word-wrap: break-word;       /* break long words (legacy) */
+  overflow-wrap: break-word;   /* modern word breaking */
+  font-family: monospace;      /* keep monospace look */
 }

@@ -1,12 +1,19 @@
 {
   "emoji": {
+    "robot": "🤖",
+    "home": "🏠",
     "cloud": "☁️",
     "restaurant": "🍽️",
+    "pizza": "🍕",
     "drink": "🧋",
     "travel": "✈️",
-    "fun": "🎬",
+    "fun": "🎮",
     "ideas": "💡",
+    "stocks": "📈",
+    "movies": "🎥",
+    "lego": "🧱",
     "pet": "🐾",
+    "health": "❤️",
     "save": "💾",
     "delete": "🗑️",
     "cancel": "❌",
@@ -19,6 +26,7 @@
     "reservation": "📅",
     "trip": "🧳",
     "history": "📜",
+    "summary": "📊",
     "help": "❓",
     "lang": "🌐"
   },
@@ -63,7 +71,8 @@
     "comingsoon": "Coming Soon...",
     "loading": "Loading...",
     "help": "Help",
-    "helptext": "<p>Welcome to yn website!</p><ul><li>Your data is saved locally for quick access.</li><ul><li>☁️: enable cloud save/load to use across devices by setting your Google Apps Script token (https://script.google.com/macros/s/YOUR_TOKEN/exec).</li></ul><li>🍽️: tracks favorite restaurants (add, history, summary, pizza-day with 60 days countdown).</li><li>🧋: tracks drinks, desserts, boba tea, alcohol, coffee, etc.</li><li>✈️: tracks travel details (flight codes, takeoff/landing times, rental car, hotel).</li><li>🎬: tracks shows, movies, anime.</li><li>💡: tracks ideas.</li><li>🐾: tracks pet details (flea & tick countdown, time since bath, weight, behavior).</li></ul><p>For more info, see <a href=\"https://github.com/ncatss/all-in-one-tracker/blob/main/README.md\" target=\"_blank\">the README</a>.</p> "
+    "helptext-restaurant": "<p>🍽️: Track restaurants! Never go to the same bad place again!</p><ul><li>➕: Add a new rstaurant visit or meal at home at any time.</li><li>📜: View history with filter & sort options.</li><li>📊: See summaries with simple stats like calories per day, top 5 most visited places etc.</li><li>🍕: Pizza day — I made a vow to eat pizza with my husband once every two months, lol.</li></ul>",
+    "helptext": "<p>Welcome to yn website!</p><ul><li>🍽️: tracks restaurants! Nerver go to same bad place again!</li><li>🧋: tracks drinks 🧋🍺☕, remember favorite flavors!</li><li>✈️: tracks travel details ✈️🚗🏨, no more going back to email over and over just to pull up landing time!</li><li>🎮: tracks hobbies! 🎬📺🐉,🧱📈🏋️💡.</li><li>❤️: tracks health. abnormal symptoms etc</li><li>🐾: tracks pets! flee & tick, bath schedule, fun memories, abnormal behavior </li></ul><p>Your data is saved locally for quick access. <br>☁️: enable cloud save/load to use across devices by setting your Google Apps Script token, see <a href=\"https://github.com/ncatss/all-in-one-tracker/blob/main/cloud_instructions.md\" target=\"_blank\">Instruction</a>. </p><p>For more info, see <a href=\"https://github.com/ncatss/all-in-one-tracker/blob/main/README.md\" target=\"_blank\">README</a>.</p>"
   },
   "ch": {
     "cloud": "云传输代码",
@@ -106,6 +115,7 @@
     "comingsoon": "敬请期待...",
     "loading": "加载中...",
     "help": "帮助",
-    "helptext": "<p>欢迎来到 yn 网站！</p><ul><li>您的数据会保存在本地，以便快速访问。</li><ul><li>☁️：启用云端保存/加载，通过设置您的 Google Apps Script Token实现跨设备使用（https://script.google.com/macros/s/YOUR_TOKEN/exec）。</li></ul><li>🍽️：吃-记录喜爱的餐厅（添加新餐厅、查看历史、查看总结、添加披萨日及60天倒计时）。</li><li>🧋：喝-记录饮品、甜点、珍珠奶茶、饮酒、咖啡等。</li><li>✈️：玩-记录旅行详情（航班代码、起飞/降落时间、租车、酒店细节）。</li><li>🎬：乐-记录电视剧、电影、动漫，演唱会等等。</li><li>💡：记录奇思妙想。</li><li>🐾：记录宠物信息（驱虫倒计时、洗澡、体重、异常行为）。</li></ul><p>更多信息，请参见 <a href=\"https://github.com/ncatss/all-in-one-tracker/blob/main/README.md\" target=\"_blank\">README</a>。</p> "
+    "helptext-restaurant": "<p>🍽️吃: 记录餐厅！再也不踩重复的雷！</p><ul><li>➕: 随时添加新的餐厅/做饭记录。</li><li>📜: 查看历史记录，支持筛选和排序。</li><li>📊: 查看简单统计数据，如每日摄入的卡路里、最常去的前五个餐厅等。</li><li>🍕: 披萨日——我结婚誓言是为了他每两个月吃一次披萨哈哈。</li></ul>",
+    "helptext": "<p>欢迎来到 yn 网站！</p><ul><li>🍽️吃: 记录餐厅！再也不踩重复的雷！</li><li>🧋喝: 记录饮品 🧋🍺☕，记住你最喜欢的口味！</li><li>✈️玩: 记录旅行细节 ✈️🚗🏨，不必一遍又一遍地翻软件来查看降落时间！</li><li>🎮乐: 记录兴趣爱好！🎬📺🐉，🧱📈🏋️💡。</li><li>❤️: 记录健康。异常症状等</li><li>🐾: 记录宠物！驱虫、洗澡时间表，美好回忆，异常行为等等</li></ul><p>你的数据保存在本地方便快速访问。<br>☁️: 启用云端保存/加载，实现不同设备间的数据共享。需设置 Google Apps Script TOKEN，参见 <a href=\"https://github.com/ncatss/all-in-one-tracker/blob/main/cloud_instructions.md\" target=\"_blank\">说明</a>。</p><p>更多信息，请查看 <a href=\"https://github.com/ncatss/all-in-one-tracker/blob/main/README.md\" target=\"_blank\">README</a>。</p>"
   }
 }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🏠</title>
+  <title data-emoji="robot"></title>
   <link rel="stylesheet" href="css/style.css?v=1.0.0" />
   <link rel="stylesheet" href="css/style-button.css?v=1.0.0" />
   <style>
@@ -26,12 +26,6 @@
       border: 1px solid #ccc;
       border-radius: 4px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-    .help-text {
-      white-space: pre-wrap;       /* preserve line breaks */
-      word-wrap: break-word;       /* break long words (legacy) */
-      overflow-wrap: break-word;   /* modern word breaking */
-      font-family: monospace;      /* keep monospace look */
     }
   </style>
 </head>
@@ -83,8 +77,8 @@
     <button class="big-btn" onclick="window.location.href='fun/index.html'">
       <div class="emoji" data-emoji="fun"></div>
     </button>
-    <button class="big-btn" onclick="window.location.href='ideas/index.html'">
-      <div class="emoji" data-emoji="ideas"></div>
+    <button class="big-btn" onclick="window.location.href='health/index.html'">
+      <div class="emoji" data-emoji="health"></div>
     </button>
     <button class="big-btn" onclick="window.location.href='pet/index.html'">
       <div class="emoji" data-emoji="pet"></div>
@@ -149,7 +143,7 @@
     let currentLang = 'en';
     async function loadLang(lang) {
       try {
-        const res = await fetch('lang.json');
+        const res = await fetch('lang.json?v=1.0.0');
         // const res = await fetch('lang.json', {
         //   cache: 'no-cache'
         // });
