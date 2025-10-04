@@ -1,0 +1,33 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+table {
+  width: 90%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  cursor: pointer;
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 600px) {
+  table {
+    width: 100%;
+    margin: 0;        /* remove auto-centering */
+    font-size: 8px;
+  }
+
+  .filter-wrapper {
+    margin-left: 0;   /* align flush left */
+  }
+}

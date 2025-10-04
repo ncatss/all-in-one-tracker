@@ -1,0 +1,207 @@
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 100vw;
+  max-width: 440px;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-top: 40px;
+}
+
+button.big-btn {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  color: #333;
+  font-size: 2.5rem;
+  border-radius: 15px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  min-width: 120px;
+  min-height: 120px;
+  padding: 0;
+}
+
+button.big-btn:hover {
+  background-color: #e6f2ff;
+  border-color: #66a3ff;
+  box-shadow: 0 5px 15px rgba(102,163,255,0.4);
+  color: #004c99;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 12px; /* Rounded edges */
+  font-weight: 600;
+  cursor: pointer;
+  color: black; /* black text */
+  font-size: 12px; /* smaller font size */
+}
+
+.emoji {
+  font-size: 56px;
+  line-height: 1;
+}
+
+#backButton {
+  position: fixed; /* fix it relative to the viewport */
+  top: 20px; /* distance from top */
+  left: 20px; /* distance from left */
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border: 1.5px solid #333;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  z-index: 1000; /* keep it on top */
+}
+
+#backButton:hover {
+  background-color: #ddd;
+}
+
+textarea, input, select {
+  font-size: 16px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+#noteText {
+  white-space: pre-wrap;
+  margin-top: 10px;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #000;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.clear-btn:hover {
+  opacity: 1;
+}
+
+.filter-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-left: 5%; /* align to the left */
+}
+
+.filter-wrapper input {
+  padding: 0.5rem 2rem 0.5rem 0.5rem; /* space for the clear button on the right */
+  font-size: 16px;
+  width: 250px;
+  max-width: 50vw; /* at most 50% of viewport width */
+  box-sizing: border-box; /* to ensure padding doesn't overflow */
+}
+
+.modal {
+  display: none; /* start hidden */
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  /* flexbox centering */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex; /* only show when .show is added */
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-family: sans-serif;
+}
+
+.cancel-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 12px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  opacity: 1;
+}
+
+.topleftbutton {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  z-index: 1001; /* higher than modal’s 999 */
+}
+
+.toprightcontainer {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  z-index: 1001;
+}
+
+.clear-button {
+  font-size: 16px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.styled-textarea {
+  width: 95%;
+  resize: vertical;
+  font-size: 16px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}

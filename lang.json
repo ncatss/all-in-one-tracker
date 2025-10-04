@@ -1,4 +1,27 @@
 {
+  "emoji": {
+    "cloud": "☁️",
+    "restaurant": "🍽️",
+    "drink": "🧋",
+    "travel": "✈️",
+    "fun": "🎬",
+    "ideas": "💡",
+    "pet": "🐾",
+    "save": "💾",
+    "delete": "🗑️",
+    "cancel": "❌",
+    "add": "➕",
+    "us": "🇺🇸",
+    "cn": "🇨🇳",
+    "flight": "✈️",
+    "car": "🚗",
+    "hotel": "🏨",
+    "reservation": "📅",
+    "trip": "🧳",
+    "history": "📜",
+    "help": "❓",
+    "lang": "🌐"
+  },
   "en": {
     "cloud": "Set Cloud Token",
     "entertoken": "Enter Your token",
