@@ -4,25 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title data-emoji="restaurant"></title>
-  <link rel="stylesheet" href="../css/style.css?v=1.0.0" />
+  <link rel="stylesheet" href="../css/style.css?v=1.0.1" />
   <link rel="stylesheet" href="../css/style-button.css?v=1.0.0" />
 </head>
-<script src="../js/cloud.js?v=1.0.0"></script>
-<script src="../js/util.js?v=1.0.0"></script>
+<script src="../js/cloud.js?v=1.0.1"></script>
+<script src="../js/util.js?v=1.0.2"></script>
+<script src="../js/form.js?v=1.0.0"></script>
 <body>
-  <button class="topleftbutton" onclick="window.location.href='../index.html'">🏠</button>
-  <button class="toprightbutton" id="helpButton" data-emoji="help"></button>
+  <button class="topleftbutton" onclick="window.location.href='../index.html'" data-emoji="home"></button>
+  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal(document, 'helptext-restaurant')"></button>
   </div>
     <div class="modal" id="helpModal">
     <div class="modal-content">
       <h3 data-i18n="help"></h3>
       <pre id="helpText" class="help-text"></pre>
-      <button class="cancel-btn" onclick="closeHelpModal()" data-emoji="cancel"></button>
+      <button class="cancel-btn" onclick="closeHelpModal(document)" data-emoji="cancel"></button>
     </div>
   </div>
 
   <div class="button-container">
-    <button class="big-btn" onclick="openAddModal()">
+    <button class="big-btn" onclick="openAddModal(document, restaurantFields, initializeAutoFillListAndId)">
       <div class="emoji" data-emoji="add"></div>
     </button>
     <button class="big-btn" onclick="window.location.href = 'history.html'">
@@ -39,179 +40,56 @@
   <datalist id="restaurantList">
     <!-- Options will be populated here by JS -->
   </datalist>
+
   <div class="modal" id="addModal">
     <div class="modal-content" id="addModalContent">
       <h3 data-i18n="addrestaurant"></h3>
-      <label for="addRestaurant" data-i18n="name"></label>
-      <input type="text" id="addRestaurant" list="restaurantList" autocomplete="on" />
-      <br /><br />
-      <label for="addExtraInfoBox">
-        <input
-          type="checkbox"
-          id="addExtraInfoBox"
-          onchange="toggleAddDateTimeInputs()"
-        />
-        <span data-i18n="addmoredetail"></span>
-      </label>
-      <br /><br />
-
-      <div id="addExtraInfoContainer" style="display: none; flex-direction: column;">
-        <div class="form-row">
-          <label for="addCustomDateInput" data-i18n="date"></label>
-          <input type="date" id="addCustomDateInput" />
-        </div>
-
-        <div class="form-row">
-          <label for="addTimeSelect" data-i18n="time"></label>
-          <select id="addTimeSelect">
-            <option value="-" selected>-</option>
-            <option value="Breakfast" data-i18n="breakfast">Breakfast</option>
-            <option value="Lunch" data-i18n="lunch">Lunch</option>
-            <option value="Dinner" data-i18n="dinner">Dinner</option>
-            <option value="Dessert" data-i18n="dessert">Dessert</option>
-          </select>
-        </div>
-
-        <div class="form-row">
-          <label for="addScoreSelect" data-i18n="score"></label>
-          <select id="addScoreSelect">
-            <option value="-" selected>-</option>
-            <option value="👎">👎</option>
-            <option value="👌">👌</option>
-            <option value="👍">👍</option>
-            <option value="⭐">⭐</option>
-          </select>
-        </div>
-
-        <div class="form-row"> 
-          <label for="addTypeSelect" data-i18n="type"></label>
-          <select id="addTypeSelect" required>
-            <option value="-" selected>-</option>
-            <option value="Delivery" data-i18n="delivery">Delivery</option>
-            <option value="DineIn" data-i18n="dinein">DineIn</option>
-            <option value="Cook" data-i18n="cook">Cook</option>
-            <option value="Leftover" data-i18n="leftover">Leftover</option>
-          </select>
-        </div>
-
-        <div class="form-row"> 
-          <label for="addNote" data-i18n="note"></label>
-          <textarea class="styled-textarea" id="addNote" rows="3" data-i18n-placeholder="optionalnote"></textarea>
-        </div>
+      <div id="addRequiredInfoContainer">
       </div>
+      <div class="form-row">
+        <input type="checkbox" id="addExtraInfoBox" onchange="toggleExtraInputs(document, restaurantFields)" />
+        <label for="addExtraInfoBox" data-i18n="addmoredetail"></label>
+      </div>
+      <div id="addExtraInfoContainer" style="display:none; flex-direction: column;"></div>
       <button onclick="submitAdd()" data-emoji="save"></button>
-      <button class="cancel-btn" onclick="closeAddModal()" data-emoji="cancel"></button>
+      <button class="cancel-btn" onclick="closeAddModal(document)" data-emoji="cancel"></button>
     </div>
   </div>
 
   <script>
-    // help text related
-    const helpButton = document.getElementById('helpButton');
-    const helpModal = document.getElementById('helpModal');
-    const helpText = document.getElementById('helpText');
-    helpButton.addEventListener('click', () => {
-      const lang = localStorage.getItem('lang') || 'en';
-      const translations = JSON.parse(localStorage.getItem('translations')) || {};
-      if (translations[lang] && translations[lang]['helptext-restaurant']) {
-          helpText.innerHTML  = translations[lang]['helptext-restaurant'];
-      }
-      helpModal.style.display = 'flex';
-    });
-    function closeHelpModal() {
-      helpModal.style.display = 'none';
-    }
-
     // fix mobile vertical viewport issue
-    function setVh() {
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
     setVh();
     window.addEventListener('resize', setVh);
     window.addEventListener('orientationchange', setVh);
 
+    // initialization
+    window.addEventListener('DOMContentLoaded', async () => {
+      disableButtons(document);
+      applyTranslations(document);
+      enableButtons(document);
+    });
 
-    // unorganized
-    let visitData = []; // Store all visits in memory
-    const STORAGE_KEY = "RestaurantVisits";
+    // add related
+    let names = [];
     let nextId = 0;
-    applyTranslations(document);
-    // Load saved data on page load
-    window.onload = async function () {
-      await loadFromGoogleSheet(STORAGE_KEY);
-      const savedData = localStorage.getItem(STORAGE_KEY);
-      if (savedData) {
-        visitData = JSON.parse(savedData);
-        const existingIds = visitData.map((item) => item.id);
-
-        nextId = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
-        console.log(nextId);
-        updateDatalistOptions();
-      }
-    };
-
-    // add
-    function openAddModal() {
-      document.getElementById("addRestaurant").value = "";
-      document.getElementById("addExtraInfoBox").checked = false;
-      toggleAddDateTimeInputs();
-      document.getElementById("addCustomDateInput").value = "";
-      document.getElementById("addTimeSelect").value = "-";
-      document.getElementById("addScoreSelect").value = "-";
-      document.getElementById("addTypeSelect").value = "-";
-      document.getElementById("addNote").value = "";
-      document.getElementById("addModal").style.display = "flex";
-    }
-
-    function closeAddModal() {
-      document.getElementById("addModal").style.display = "none";
-    }
-
-    function toggleAddDateTimeInputs() {
-      const isChecked = document.getElementById("addExtraInfoBox").checked;
-      document.getElementById("addExtraInfoContainer").style.display = isChecked ? "flex" : "none";
-    }
-
-    function submitAdd() {
-      const restaurant = document.getElementById("addRestaurant").value.trim();
-      if (!restaurant) {
-        alert("Please enter a restaurant name");
-        return;
-      }
-
-      let date;
-      if (document.getElementById("addExtraInfoBox").checked) {
-        date = document.getElementById("addCustomDateInput").value;
-        if (!date) {
-          date = new Date().toLocaleDateString("en-CA").split("T")[0]; // today's date
+    const SHEETNAME = "RestaurantVisits";
+    async function initializeAutoFillListAndId() {
+      if (nextId === 0) {
+        const data = await loadFromGoogleSheet(SHEETNAME);
+        if (data){
+          names = [...new Set(data.map((entry) => entry.name))]; // Unique names
+          updateDatalistOptions();
+          const existingIds = data.map(entry => entry.id);
+          nextId = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
+          console.log("loaded from cloud:", nextId, names);
         }
-      } else {
-        date = new Date().toLocaleDateString("en-CA").split("T")[0]; // today's date
+        else {
+          nextId = 1;
+        }
       }
-
-      const time = document.getElementById("addTimeSelect").value || "-";
-      const score = document.getElementById("addScoreSelect").value || "-";
-      const type = document.getElementById("addTypeSelect").value || "-";
-      const note = document.getElementById("addNote").value || "";
-
-      // Add the entry to visitData
-      const newRow = { id: nextId, date, restaurant, time, score, type, note };
-      nextId = nextId + 1;
-      visitData.push(newRow);
-
-      // Save and update
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(visitData));
-      updateDatalistOptions();
-      addToGoogleSheet(STORAGE_KEY,newRow);
-
-      closeAddModal();
     }
-
     function updateDatalistOptions() {
-      const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-      const names = [...new Set(data.map((entry) => entry.restaurant))]; // Unique names
       const datalist = document.getElementById("restaurantList");
-
       datalist.innerHTML = ""; // Clear existing options
       names.forEach((name) => {
         const option = document.createElement("option");
@@ -219,6 +97,27 @@
         datalist.appendChild(option);
       });
     }
+
+    function submitAdd() {
+      const formData = getFormDataFromAdd(document, restaurantFields);
+      console.log("Form Data:", formData);
+      const name = formData.name;
+      if (!name) {
+        alert("Please enter a name");
+        return;
+      }
+
+      if (!names.includes(name)) {
+        names.push(name);
+        updateDatalistOptions();
+      }
+
+      const newRow = { id: nextId, ...formData };
+      nextId++;
+      saveNewVisit(SHEETNAME, newRow);
+      addToGoogleSheet(SHEETNAME, newRow);
+      closeAddModal(document);
+    }    
   </script>
 </body>
 </html>

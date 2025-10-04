@@ -165,6 +165,9 @@ textarea, input, select {
   margin-right: 10px; /* just small padding */
   width: auto;       /* remove fixed width */
 }
+.form-row input[type="checkbox"] {
+  margin-right: 10px; /* spacing between checkbox and text */
+}
 
 .cancel-btn {
   position: absolute;
@@ -234,3 +237,11 @@ textarea, input, select {
   overflow-wrap: break-word;   /* modern word breaking */
   font-family: monospace;      /* keep monospace look */
 }
+
+button.waiting {
+  opacity: 0.6;
+}
+
+/* button.waiting::after {
+  content: "⏳";
+} */

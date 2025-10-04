@@ -47,7 +47,7 @@
   </div>
 
   <div class="toprightcontainer">
-    <button class="clear-button" id="helpButton" data-emoji="help"></button>
+    <button class="clear-button" id="helpButton" data-emoji="help" onClick="openHelpModal(document, 'helptext')"></button>
     <div style="position: relative;">
       <button class="clear-button" id="langButton" data-emoji="lang"></button>
       <div id="langMenu">
@@ -60,7 +60,7 @@
     <div class="modal-content">
       <h3 data-i18n="help"></h3>
       <pre id="helpText" class="help-text"></pre>
-      <button class="cancel-btn" onclick="closeHelpModal()" data-emoji="cancel"></button>
+      <button class="cancel-btn" onclick="closeHelpModal(document)" data-emoji="cancel"></button>
     </div>
   </div>
 
@@ -115,25 +115,7 @@
       tokenInput.value = '';
     }
 
-    // help text related
-    const helpButton = document.getElementById('helpButton');
-    const helpModal = document.getElementById('helpModal');
-    const helpText = document.getElementById('helpText');
-    helpButton.addEventListener('click', () => {
-      if (translations[currentLang] && translations[currentLang]['helptext']) {
-          helpText.innerHTML  = translations[currentLang]['helptext'];
-      }
-      helpModal.style.display = 'flex';
-    });
-    function closeHelpModal() {
-      helpModal.style.display = 'none';
-    }
-
     // fix mobile vertical viewport issue
-    function setVh() {
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
     setVh();
     window.addEventListener('resize', setVh);
     window.addEventListener('orientationchange', setVh);
