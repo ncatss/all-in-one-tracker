@@ -19,6 +19,8 @@
 <script src="../js/cloud.js?v=1.0.2"></script>
 <script src="../js/util.js?v=1.0.2"></script>
 <script src="../js/form.js?v=1.0.0"></script>
+<script src="../js/modal.js?v=1.0.0"></script>
+<script src="../js/table.js?v=1.0.0"></script>
 <body>
 
   <button class="topleftbutton" onclick="window.location.href='index.html'" data-emoji="restaurant"></button>
@@ -95,11 +97,12 @@
     };
 
     window.addEventListener("DOMContentLoaded", async () => {
-      applyTranslations();
+      disableButtons();
       populateFilterColumns(state);
       buildTableHeaders(state);
       updateSortIndicators(state);
       await loadHistoryData(state);
+      enableButtons();
     });
   </script>
 

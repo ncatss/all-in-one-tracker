@@ -10,9 +10,10 @@
 <script src="../js/cloud.js?v=1.0.1"></script>
 <script src="../js/util.js?v=1.0.2"></script>
 <script src="../js/form.js?v=1.0.0"></script>
+<script src="../js/modal.js?v=1.0.0"></script>
 <body>
   <button class="topleftbutton" onclick="window.location.href='../index.html'" data-emoji="home"></button>
-  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal('helptext-restaurant')"></button>
+  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal(state.helpId)"></button>
   </div>
     <div class="modal" id="helpModal">
     <div class="modal-content">
@@ -23,7 +24,7 @@
   </div>
 
   <div class="button-container">
-    <button class="big-btn" onclick="openAddModal(restaurantFields, initializeAutoFillListAndId)">
+    <button class="big-btn" onclick="openAddModal(state)">
       <div class="emoji" data-emoji="add"></div>
     </button>
     <button class="big-btn" onclick="window.location.href = 'history.html'">
@@ -47,11 +48,11 @@
       <div id="addRequiredInfoContainer">
       </div>
       <div class="form-row">
-        <input type="checkbox" id="addExtraInfoBox" onchange="toggleExtraInputs(restaurantFields)" />
+        <input type="checkbox" id="addExtraInfoBox" onchange="toggleExtraInputs(state.formFields)" />
         <label for="addExtraInfoBox" data-i18n="addmoredetail"></label>
       </div>
       <div id="addExtraInfoContainer" style="display:none; flex-direction: column;"></div>
-      <button onclick="submitAdd()" data-emoji="save"></button>
+      <button onclick="submitAdd(state)" data-emoji="save"></button>
       <button class="cancel-btn" onclick="closeModal('addModal')" data-emoji="cancel"></button>
     </div>
   </div>
@@ -70,54 +71,17 @@
     });
 
     // add related
-    let names = [];
-    let nextId = 0;
-    const SHEETNAME = "RestaurantVisits";
-    async function initializeAutoFillListAndId() {
-      if (nextId === 0) {
-        const data = await loadFromGoogleSheet(SHEETNAME);
-        if (data){
-          names = [...new Set(data.map((entry) => entry.restaurant))]; // Unique names
-          updateDatalistOptions();
-          const existingIds = data.map(entry => entry.id);
-          nextId = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
-          console.log("loaded from cloud:", nextId, names);
-        }
-        else {
-          nextId = 1;
-        }
-      }
-    }
-    function updateDatalistOptions() {
-      const datalist = document.getElementById("restaurantList");
-      datalist.innerHTML = ""; // Clear existing options
-      names.forEach((name) => {
-        const option = document.createElement("option");
-        option.value = name;
-        datalist.appendChild(option);
-      });
-    }
+    let state = {
+      SHEETNAME: 'RestaurantVisits',
+      helpId: 'helptext-restaurant',
+      nextId: 0,
+      formFields: restaurantFields,
 
-    function submitAdd() {
-      const formData = getFormData(restaurantFields);
-      console.log("Form Data:", formData);
-      const name = formData.restaurant;
-      if (!name) {
-        alert("Please enter a name");
-        return;
-      }
-
-      if (!names.includes(name)) {
-        names.push(name);
-        updateDatalistOptions();
-      }
-
-      const newRow = { id: nextId, ...formData };
-      nextId++;
-      saveNewVisit(SHEETNAME, newRow);
-      addToGoogleSheet(SHEETNAME, newRow);
-      closeModal('addModal');
-    }    
+      /* optional */
+      datalistkey: 'restaurant',
+      datalistid: 'restaurantList',
+      names: [],
+    };
   </script>
 </body>
 </html>
