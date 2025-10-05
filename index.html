@@ -85,7 +85,7 @@
     </button>
   </div>
 
-  <script src="js/cloud.js?v=1.0.0"></script>
+  <script src="js/cloud.js?v=1.0.1"></script>
   <script src="js/util.js?v=1.0.0"></script>
   <script src="js/modal.js?v=1.0.0"></script>
   <script>
@@ -99,10 +99,17 @@
       tokenInput.value = savedToken || '';
       tokenModal.style.display = 'flex';
     });
-    function saveToken() {
+    async function saveToken() {
       const token = tokenInput.value.trim();
       if (token) {
-        localStorage.setItem(tokenKey, token);
+        const success = await verifyToken(token);
+        if (success){
+          localStorage.setItem(tokenKey, token);
+          alert(translations[currentLang]['tokensuccess']);
+        } else{
+          alert(translations[currentLang]['tokenfailure']);
+          return;
+        }
       }
       else {
         localStorage.removeItem(tokenKey);
