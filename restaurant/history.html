@@ -101,7 +101,7 @@
       populateFilterColumns(state);
       buildTableHeaders(state);
       updateSortIndicators(state);
-      if (localStorage['history_range']){
+      if (localStorage['history_range' + state.SHEETNAME]){
         document.getElementById("historyRange").value = localStorage['history_range'];
       }
       await loadHistoryData(state);
