@@ -7,165 +7,104 @@
   <link rel="stylesheet" href="../css/style.css?v=1.0.0" />
   <link rel="stylesheet" href="../css/style-table.css?v=1.0.0" />
 </head>
-<script src="../js/util.js?v=1.0.0"></script>
+<script src="../js/cloud.js?v=1.0.2"></script>
+<script src="../js/util.js?v=1.0.2"></script>
+<script src="../js/form.js?v=1.0.0"></script>
+<script src="../js/modal.js?v=1.0.0"></script>
+<script src="../js/table.js?v=1.0.0"></script>
 <body>
-  <button id="backButton" onclick="window.location.href='index.html'">🍽️</button><br>
-  <br />
-  <br />
-  <br />
-  <div class="filter-wrapper">
-    <label for="timeFilter">🕒:</label>
-    <select id="timeFilter" onchange="renderSummary()">
-      <option value="all" data-i18n="all"></option>
-      <option value="lastYear" data-i18n="lastyear"></option>
-      <option value="last3Months" data-i18n="last3month"></option>
-      <option value="lastMonth" data-i18n="lastmonth"></option>
-    </select>
+  <button class="topleftbutton" onclick="window.location.href='index.html'" data-emoji="restaurant"></button>
+  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal(state.helpId)"></button>
   </div>
-  <br><br>
-
-  <table id="summaryTable">
-    <thead>
-      <tr>
-        <th>🍽️</th>
-        <th>🔢</th>
-        <th>⭐</th>
-        <th>📝</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <!-- Note Modal -->
-  <div id="noteModal" class="modal" style="display:none;">
+    <div class="modal" id="helpModal">
     <div class="modal-content">
-      <span id="closeNoteModal" class="close-button">&times;</span>
-      <h3>Note</h3>
+      <h3 data-i18n="help"></h3>
+      <pre id="helpText" class="help-text"></pre>
+      <button class="cancel-btn" onclick="closeModal('helpModal')" data-emoji="cancel"></button>
+    </div>
+  </div>
+  <br />
+  <br />
+
+  <div class="filter-wrapper">
+    <div class="form-row">
+      <label for="historyRange" data-emoji="time"></label>
+      <select id="historyRange" onchange="loadHistoryData(state)">
+        <option value="lastMonth" selected data-i18n="lastmonth"></option>
+        <option value="last3Months" data-i18n="last3month"></option>
+        <option value="lastYear" data-i18n="lastyear"></option>
+        <option value="all" data-i18n="all"></option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label for="groupColumnSelect" data-i18n="groupby"></label>
+      <select id="groupColumnSelect" multiple onchange="updateSummary(state)"></select>
+    </div>
+
+    <div class="form-row">
+      <label for="aggColumnSelect" data-i18n="aggby"></label>
+      <select id="aggColumnSelect" multiple onchange="updateSummary(state)"></select>
+    </div>
+  </div>
+
+  <div style="overflow-x: auto;">
+    <table id="summaryTable">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="modal" id="noteModal">
+    <div class="modal-content">
+      <h3 data-emoji="note"></h3>
       <p id="noteText"></p>
+      <button class="cancel-btn" onclick="closeModal('noteModal')" data-emoji="cancel"></button>
+    </div>
+  </div>
+
+  <div class="modal" id="groupDetailModal">
+    <div class="modal-content">
+      <h3 data-i18n="groupdetails">Group Details</h3>
+      <div id="groupDetailTableWrapper"></div>
+      <button class="cancel-btn" onclick="closeModal('groupDetailModal')" data-emoji="cancel"></button>
     </div>
   </div>
 
   <script>
-    const STORAGE_KEY = 'RestaurantVisits';
+    // organized
+    let state = { 
+      SHEETNAME: 'RestaurantVisits',
+      helpId: 'helptext-restaurant-summary',
+      historicalData: [],
+      filteredData: [],
+      formFields: restaurantFields,
+      tableId: 'summaryTable',
+      groupByCols: ['restaurant'],
+      aggCols: [],
+      currentSort: { column: "count", asc: false }
+    };
 
-    function getFilteredData() {
-      const filter = document.getElementById("timeFilter").value;
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return [];
+    window.addEventListener("DOMContentLoaded", async () => {
+      applyTranslations();
+      disableButtons();
 
-      const data = JSON.parse(raw);
-      const now = new Date();
-      now.setDate(1);
-
-      return data.filter(entry => {
-        if (!entry.date) return false;
-        const entryDate = new Date(entry.date);
-
-        switch (filter) {
-          case "lastYear":
-            const lastYear = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
-            return entryDate >= lastYear;
-          case "last3Months":
-            const threeMonthsAgo = new Date(now);
-            threeMonthsAgo.setMonth(now.getMonth() - 3);
-            return entryDate >= threeMonthsAgo;
-          case "lastMonth":
-            const lastMonth = new Date(now);
-            lastMonth.setMonth(now.getMonth() - 1);
-            return entryDate >= lastMonth;
-          case "all":
-          default:
-            return true;
-        }
-      });
-    }
-
-    function groupByRestaurant(data) {
-      const summary = {};
-
-      data.forEach(entry => {
-        const name = entry.restaurant || "Unknown";
-        if (!summary[name]) {
-          summary[name] = {
-            count: 0,
-            scores: new Set(),
-            notes: []
-          };
-        }
-        summary[name].count += 1;
-        if (entry.score) summary[name].scores.add(entry.score);
-        if (entry.note) summary[name].notes.push(entry.note);
-      });
-
-      return summary;
-    }
-
-    function renderSummary() {
-      const data = getFilteredData();
-      const grouped = groupByRestaurant(data);
-      const tbody = document.querySelector("#summaryTable tbody");
-      tbody.innerHTML = "";
-
-      Object.entries(grouped)
-        .sort((a, b) => b[1].count - a[1].count)  // Sort descending by total visits
-        .forEach(([name, groupData]) => {
-          const row = document.createElement("tr");
-
-          const total = groupData.count;
-          const scores = [...groupData.scores].join(", ");
-          const notes = groupData.notes.join(" | ");
-
-          row.innerHTML = `
-            <td class="nowrap">${name}</td>
-            <td>${total}</td>
-            <td>${scores || "-"}</td>
-            <td>
-              <button onclick="showNoteModal(\`${notes.replace(/`/g, '\\`')}\`)">📝</button>
-            </td>
-          `;
-          tbody.appendChild(row);
-        });
-    }
-
-    // Elements
-    const noteModal = document.getElementById('noteModal');
-    const noteText = document.getElementById('noteText');
-    const closeNoteModal = document.getElementById('closeNoteModal');
-
-    // Function to open modal with text
-    function showNoteModal(text) {
-      noteText.textContent = text;
-      noteModal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';  // Optional: prevent background scroll
-    }
-
-    // Close modal function
-    function closeModal() {
-      noteModal.style.display = 'none';
-      document.body.style.overflow = '';  // Restore scroll
-    }
-
-    // Close modal on close button click
-    closeNoteModal.addEventListener('click', closeModal);
-
-    // Close modal when clicking outside content
-    noteModal.addEventListener('click', (e) => {
-      if (e.target === noteModal) {
-        closeModal();
+      populateFilterColumns(state, 'group');
+      populateFilterColumns(state, 'agg');
+      const select = document.getElementById("groupColumnSelect");
+      const defaultValue = "restaurant";
+      const optionToSelect = [...select.options].find(opt => opt.value === defaultValue);
+      if (optionToSelect) {
+        optionToSelect.selected = true;
       }
+      buildSummaryTableHeaders(state);
+      applyTranslations();
+      if (localStorage['history_range']){
+        document.getElementById("historyRange").value = localStorage['history_range'];
+      }
+      await loadHistoryData(state);
+      enableButtons();
     });
 
-    // Example: attach click listener to elements with a class "show-note-btn"
-    document.querySelectorAll('.show-note-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        const note = button.getAttribute('data-note') || 'No note';
-        showNoteModal(note);
-      });
-    });
-
-    // Run on page load
-    applyTranslations(document);
-    document.addEventListener("DOMContentLoaded", renderSummary);
   </script>
 </body>
 </html>
