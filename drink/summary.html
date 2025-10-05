@@ -2,28 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>📜</title>
-  <link rel="stylesheet" href="../css/style.css?v=1.0.1" />
-  <link rel="stylesheet" href="../css/style-table.css?v=1.0.1" />
-  <style>
-    #filterColumnSelect {
-      margin-right: 8px;
-    }
-
-    #filterInputWrapper {
-      margin-left: 8px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📊</title>
+  <link rel="stylesheet" href="../css/style.css?v=1.0.0" />
+  <link rel="stylesheet" href="../css/style-table.css?v=1.0.0" />
 </head>
 <script src="../js/cloud.js?v=1.0.2"></script>
 <script src="../js/util.js?v=1.0.2"></script>
 <script src="../js/form.js?v=1.0.0"></script>
 <script src="../js/modal.js?v=1.0.0"></script>
-<script src="../js/table.js?v=1.0.1"></script>
+<script src="../js/table.js?v=1.0.0"></script>
 <body>
-
-  <button class="topleftbutton" onclick="window.location.href='index.html'" data-emoji="restaurant"></button>
+  <button class="topleftbutton" onclick="window.location.href='index.html'" data-emoji="drink"></button>
   <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal(state.helpId)"></button>
   </div>
     <div class="modal" id="helpModal">
@@ -35,6 +25,7 @@
   </div>
   <br />
   <br />
+
   <div class="filter-wrapper">
     <div class="form-row">
       <label for="historyRange" data-emoji="time"></label>
@@ -46,26 +37,21 @@
       </select>
     </div>
     <div class="form-row">
-      <label for="filterColumnSelect" data-emoji="filter"></label>
-      <select id="filterColumnSelect" onchange="renderFilterInput(state)"></select>
-      <span id="filterInputWrapper"></span>
+      <label for="groupColumnSelect" data-i18n="groupby"></label>
+      <select id="groupColumnSelect" multiple onchange="updateSummary(state)"></select>
+    </div>
+
+    <div class="form-row">
+      <label for="aggColumnSelect" data-i18n="aggby"></label>
+      <select id="aggColumnSelect" multiple onchange="updateSummary(state)"></select>
     </div>
   </div>
 
   <div style="overflow-x: auto;">
-    <table id="historicTable">
+    <table id="summaryTable">
       <thead></thead>
       <tbody></tbody>
     </table>
-  </div>
-
-  <div class="modal" id="editModal">
-    <div class="modal-content">
-      <h3 data-i18n="edit"></h3>
-      <div id="addAllInfoContainer"></div>
-      <button onclick="submitEdit(state)" data-emoji="save"></button>
-      <button class="cancel-btn" onclick="closeModal('editModal')" data-emoji="cancel"></button>
-    </div>
   </div>
 
   <div class="modal" id="noteModal">
@@ -76,38 +62,49 @@
     </div>
   </div>
 
+  <div class="modal" id="groupDetailModal">
+    <div class="modal-content">
+      <h3 data-i18n="groupdetails">Group Details</h3>
+      <div id="groupDetailTableWrapper"></div>
+      <button class="cancel-btn" onclick="closeModal('groupDetailModal')" data-emoji="cancel"></button>
+    </div>
+  </div>
+
   <script>
-    // load data
+    // organized
     let state = { 
-      SHEETNAME: 'RestaurantVisits',
-      helpId: 'helptext-history',
+      SHEETNAME: 'DrinkVisits',
+      helpId: 'helptext-summary',
       historicalData: [],
       filteredData: [],
-      formFields: restaurantFields,
-      tableId: 'historicTable',
-      currentFilter: {
-        column: null,
-        type: null,
-        from: null,
-        to: null,
-        value: null
-      },
-      editIndex: null,
-      currentSort: { column: "date", asc: false }
+      formFields: drinkFields,
+      tableId: 'summaryTable',
+      groupByCols: ['place'],
+      aggCols: [],
+      currentSort: { column: "count", asc: false }
     };
 
     window.addEventListener("DOMContentLoaded", async () => {
+      applyTranslations();
       disableButtons();
-      populateFilterColumns(state);
-      buildTableHeaders(state);
-      updateSortIndicators(state);
-      if (localStorage['history_range' + state.SHEETNAME]){
+
+      populateFilterColumns(state, 'group');
+      populateFilterColumns(state, 'agg');
+      const select = document.getElementById("groupColumnSelect");
+      const defaultValue = "place";
+      const optionToSelect = [...select.options].find(opt => opt.value === defaultValue);
+      if (optionToSelect) {
+        optionToSelect.selected = true;
+      }
+      buildSummaryTableHeaders(state);
+      applyTranslations();
+      if (localStorage['history_range']){
         document.getElementById("historyRange").value = localStorage['history_range'];
       }
       await loadHistoryData(state);
       enableButtons();
     });
-  </script>
 
+  </script>
 </body>
 </html>

@@ -23,7 +23,7 @@
 <script src="../js/table.js?v=1.0.1"></script>
 <body>
 
-  <button class="topleftbutton" onclick="window.location.href='index.html'" data-emoji="restaurant"></button>
+  <button class="topleftbutton" onclick="window.location.href='index.html'" data-emoji="drink"></button>
   <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal(state.helpId)"></button>
   </div>
     <div class="modal" id="helpModal">
@@ -79,11 +79,11 @@
   <script>
     // load data
     let state = { 
-      SHEETNAME: 'RestaurantVisits',
+      SHEETNAME: 'DrinkVisits',
       helpId: 'helptext-history',
       historicalData: [],
       filteredData: [],
-      formFields: restaurantFields,
+      formFields: drinkFields,
       tableId: 'historicTable',
       currentFilter: {
         column: null,
