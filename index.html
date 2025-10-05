@@ -42,12 +42,12 @@
       ></textarea>
       <button onclick="saveToken()" data-emoji="save"></button>
       <button onclick="deleteToken()" data-emoji="delete"></button>
-      <button class="cancel-btn" onclick="closeModal()" data-emoji="cancel"></button>
+      <button class="cancel-btn" onclick="closeModal('tokenModal')" data-emoji="cancel"></button>
     </div>
   </div>
 
   <div class="toprightcontainer">
-    <button class="clear-button" id="helpButton" data-emoji="help" onClick="openHelpModal(document, 'helptext')"></button>
+    <button class="clear-button" id="helpButton" data-emoji="help" onClick="openHelpModal('helptext')"></button>
     <div style="position: relative;">
       <button class="clear-button" id="langButton" data-emoji="lang"></button>
       <div id="langMenu">
@@ -60,7 +60,7 @@
     <div class="modal-content">
       <h3 data-i18n="help"></h3>
       <pre id="helpText" class="help-text"></pre>
-      <button class="cancel-btn" onclick="closeHelpModal(document)" data-emoji="cancel"></button>
+      <button class="cancel-btn" onclick="closeModal('helpModal')" data-emoji="cancel"></button>
     </div>
   </div>
 
@@ -98,9 +98,6 @@
       tokenInput.value = savedToken || '';
       tokenModal.style.display = 'flex';
     });
-    function closeModal() {
-      tokenModal.style.display = 'none';
-    }
     function saveToken() {
       const token = tokenInput.value.trim();
       if (token) {
@@ -137,7 +134,7 @@
         currentLang = lang;
         localStorage.setItem('lang', currentLang);
         localStorage.setItem('translations', JSON.stringify(translations));
-        applyTranslations(document);
+        applyTranslations();
       } catch (error) {
         console.error("Error loading language file:", error);
       }

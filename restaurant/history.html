@@ -4,323 +4,103 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>📜</title>
-  <link rel="stylesheet" href="../css/style.css?v=1.0.0" />
-  <link rel="stylesheet" href="../css/style-table.css?v=1.0.0" />
+  <link rel="stylesheet" href="../css/style.css?v=1.0.1" />
+  <link rel="stylesheet" href="../css/style-table.css?v=1.0.1" />
+  <style>
+    #filterColumnSelect {
+      margin-right: 8px;
+    }
+
+    #filterInputWrapper {
+      margin-left: 8px;
+    }
+  </style>
 </head>
+<script src="../js/cloud.js?v=1.0.2"></script>
+<script src="../js/util.js?v=1.0.2"></script>
+<script src="../js/form.js?v=1.0.0"></script>
 <body>
 
-  <button id="backButton" onclick="window.location.href='index.html'">🍽️</button>
-  <br />
-  <br />
-  <br />
-
-  <div class="filter-wrapper">
-    <input
-      type="text"
-      id="restaurantFilter"
-      data-i18n-placeholder="filterbyrestaurant"
-      oninput="filterByRestaurant()"
-    />
-    <span class="clear-btn" onclick="clearFilter()">❌</span>
+  <button class="topleftbutton" onclick="window.location.href='index.html'" data-emoji="restaurant"></button>
+  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal(state.helpId)"></button>
   </div>
-
-  <br /><br />
-
-  <div style="overflow-x: auto;">
-    <table id="visitTable">
-      <thead>
-        <tr>
-          <th data-column="date" onclick="sortTableBy('date')">📅<span class="sort-arrow"></span></th>
-          <th data-column="restaurant" onclick="sortTableBy('restaurant')">🍽️<span class="sort-arrow"></span></th>
-          <th data-column="time" onclick="sortTableBy('time')">🕒<span class="sort-arrow"></span></th>
-          <th data-column="score" onclick="sortTableBy('score')">⭐<span class="sort-arrow"></span></th>
-          <th data-column="type" onclick="sortTableBy('type')">🍳<span class="sort-arrow"></span></th>
-          <th data-column="note">📝<span class="sort-arrow"></span></th>
-          <th data-column="action">⚙️<span class="sort-arrow"></span></th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- rows will be populated here -->
-      </tbody>
-    </table>
-  </div>
-
-  <div
-    id="editModal"
-    style="
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90vw;
-      max-width: 500px;
-      max-height: 90vh;
-      overflow-y: auto;
-      background: #fff;
-      padding: 40px;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.4);
-      border-radius: 12px;
-      z-index: 1000;
-    "
-  >
-    <h3>Edit Visit</h3>
-    <label>Restaurant:
-      <input type="text" id="editRestaurant" />
-    </label>
-    <br /><br />
-    <label>Date:
-      <input type="date" id="editDate" />
-    </label>
-    <br /><br />
-    <label>Time:
-      <select id="editTime">
-        <option value="-">-</option>
-        <option value="Breakfast">Breakfast</option>
-        <option value="Lunch">Lunch</option>
-        <option value="Dinner">Dinner</option>
-        <option value="Dessert">Dessert</option>
-      </select>
-    </label>
-    <br /><br />
-    <label>Score:
-      <select id="editScore">
-        <option value="-" selected>-</option>
-        <option value="👎">👎</option>
-        <option value="👌">👌</option>
-        <option value="👍">👍</option>
-        <option value="⭐">⭐</option>
-      </select>
-    </label>
-    <br /><br />
-    <label>Type:
-      <select id="editType">
-        <option value="-" selected>-</option>
-        <option value="Delivery">Delivery</option>
-        <option value="DineIn">DineIn</option>
-        <option value="Cook">Cook</option>
-        <option value="Leftover">Leftover</option>
-      </select>
-    </label>
-    <br /><br />
-    <label>Note:
-      <textarea class="styled-textarea" id="editNote" rows="3" placeholder="Optional note..."></textarea>
-    </label>
-    <br /><br />
-    <button onclick="submitEdit()">Save</button>
-    <button onclick="closeEditModal()">Cancel</button>
-  </div>
-
-  <div id="noteModal" class="modal">
+    <div class="modal" id="helpModal">
     <div class="modal-content">
-      <span id="closeNoteModal" class="close-button">&times;</span>
-      <h3>Note</h3>
-      <p id="noteText"></p>
+      <h3 data-i18n="help"></h3>
+      <pre id="helpText" class="help-text"></pre>
+      <button class="cancel-btn" onclick="closeModal('helpModal')" data-emoji="cancel"></button>
+    </div>
+  </div>
+  <br />
+  <br />
+  <div class="filter-wrapper">
+    <div class="form-row">
+      <label for="historyRange" data-emoji="time"></label>
+      <select id="historyRange" onchange="loadHistoryData(state)">
+        <option value="lastMonth" selected data-i18n="lastmonth"></option>
+        <option value="last3Months" data-i18n="last3month"></option>
+        <option value="lastYear" data-i18n="lastyear"></option>
+        <option value="all" data-i18n="all"></option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label for="filterColumnSelect" data-emoji="filter"></label>
+      <select id="filterColumnSelect" onchange="renderFilterInput(state)"></select>
+      <span id="filterInputWrapper"></span>
     </div>
   </div>
 
-  <script src="../js/cloud.js?v=1.0.0"></script>
-  <script src="../js/util.js?v=1.0.0"></script>
+  <div style="overflow-x: auto;">
+    <table id="historicTable">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <h3 data-i18n="edit"></h3>
+      <div id="addAllInfoContainer"></div>
+      <button onclick="submitEdit(state)" data-emoji="save"></button>
+      <button class="cancel-btn" onclick="closeModal('editModal')" data-emoji="cancel"></button>
+    </div>
+  </div>
+
+  <div class="modal" id="noteModal">
+    <div class="modal-content">
+      <h3 data-emoji="note"></h3>
+      <p id="noteText"></p>
+      <button class="cancel-btn" onclick="closeModal('noteModal')" data-emoji="cancel"></button>
+    </div>
+  </div>
 
   <script>
-    let visitData = [];
-    const STORAGE_KEY = 'RestaurantVisits';
-    let editIndex = null; // global to track which entry we edit
+    // load data
+    let state = { 
+      SHEETNAME: 'RestaurantVisits',
+      helpId: 'helptext-restaurant-history',
+      historicalData: [],
+      filteredData: [],
+      formFields: restaurantFields,
+      tableId: 'historicTable',
+      currentFilter: {
+        column: null,
+        type: null,
+        from: null,
+        to: null,
+        value: null
+      },
+      editIndex: null,
+      currentSort: { column: "date", asc: false }
+    };
 
-    // Load data from localStorage
-    function loadVisitData() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        visitData = JSON.parse(stored);
-      }
-    }
-
-    // Render the table rows
-    function renderTable(data = visitData) {
-      const tableBody = document.querySelector('#visitTable tbody');
-      tableBody.innerHTML = '';
-
-      sortData();
-
-      data.forEach((entry, index) => {
-        const row = tableBody.insertRow();
-
-        const dateCell = row.insertCell(0);
-        dateCell.textContent = entry.date?.split("T")[0] || "";
-        dateCell.classList.add("nowrap");
-
-        const restaurantCell = row.insertCell(1);
-        restaurantCell.textContent = entry.restaurant;
-        restaurantCell.style.whiteSpace = "nowrap"; // ✅ no wrapping
-
-        row.insertCell(2).textContent = entry.time || '-';
-        row.insertCell(3).textContent = entry.score || '-';
-        row.insertCell(4).textContent = entry.type || '-';
-
-        const noteCell = row.insertCell(5);
-        if (entry.note) {
-          const button = document.createElement("button");
-          button.textContent = "📝";
-          button.onclick = () => showNoteModal(entry.note);
-          noteCell.appendChild(button);
-        } else {
-          noteCell.textContent = "";
-        }
-
-        // Actions cell
-        const actionsCell = row.insertCell(6);
-        actionsCell.innerHTML = `
-          <button onclick="editEntry(${index})">✏️</button>
-          <button onclick="deleteEntry(${index}, ${entry.id || 0})">🗑️</button>
-        `;
-      });
-    }
-
-    // Sort logic
-    let currentSort = { column: 'date', asc: false };
-
-    function sortData() {
-      visitData.sort((a, b) => {
-        let valA = a[currentSort.column];
-        let valB = b[currentSort.column];
-
-        // For date, compare strings (ISO dates) normally
-        // For others, do case insensitive compare if strings
-        if (typeof valA === 'string') valA = valA.toLowerCase();
-        if (typeof valB === 'string') valB = valB.toLowerCase();
-
-        if (valA < valB) return currentSort.asc ? -1 : 1;
-        if (valA > valB) return currentSort.asc ? 1 : -1;
-        return 0;
-      });
-    }
-
-    function sortTableBy(column) {
-      if (currentSort.column === column) {
-        currentSort.asc = !currentSort.asc; // toggle sort order
-      } else {
-        currentSort.column = column;
-        currentSort.asc = true; // default ascending when new column chosen
-      }
-      updateSortIndicators();
-      renderTable();
-    }
-
-    function updateSortIndicators() {
-      const ths = document.querySelectorAll('#visitTable thead th');
-      ths.forEach(th => {
-        const col = th.getAttribute('data-column');
-        const arrowSpan = th.querySelector('.sort-arrow');
-        if (col === currentSort.column) {
-          arrowSpan.textContent = currentSort.asc ? ' ▲' : ' ▼';
-        } else {
-          arrowSpan.textContent = '';
-        }
-      });
-    }
-
-    function showNoteModal(noteText) {
-      const modal = document.getElementById("noteModal");
-      const noteTextElement = document.getElementById("noteText");
-      const closeButton = modal.querySelector(".close-button");
-
-      noteTextElement.textContent = noteText;
-
-      modal.style.display = "flex";
-
-      closeButton.onclick = () => {
-        modal.style.display = "none";
-      };
-
-      // Close modal if user clicks outside the content
-      window.onclick = (event) => {
-        if (event.target === modal) {
-          modal.style.display = "none";
-        }
-      };
-    }
-
-    // Edit functions
-    function editEntry(index) {
-      editIndex = index;
-      const entry = visitData[index];
-
-      document.getElementById('editRestaurant').value = entry.restaurant;
-      document.getElementById('editDate').value = entry.date.split('T')[0];
-      document.getElementById('editTime').value = entry.time || '-';
-      document.getElementById('editScore').value = entry.score || '-';
-      document.getElementById('editType').value = entry.type || '-';
-      document.getElementById('editNote').value = entry.note || '';
-
-      document.getElementById('editModal').style.display = 'block';
-    }
-
-    function submitEdit() {
-      const restaurant = document.getElementById('editRestaurant').value.trim();
-      const id = visitData[editIndex]['id'] || 0;
-      const date = document.getElementById('editDate').value;
-      const time = document.getElementById('editTime').value;
-      const score = document.getElementById('editScore').value;
-      const type = document.getElementById('editType').value;
-      const note = document.getElementById('editNote').value;
-
-      if (!restaurant) {
-        alert('Restaurant name cannot be empty');
-        return;
-      }
-      if (!date) {
-        alert('Please select a valid date');
-        return;
-      }
-
-      visitData[editIndex] = { id, restaurant, date, time, score, type, note };
-      updateRow(STORAGE_KEY, visitData[editIndex]);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(visitData));
-      renderTable();
-      closeEditModal();
-    }
-
-    function closeEditModal() {
-      document.getElementById('editModal').style.display = 'none';
-      editIndex = null;
-    }
-
-    // Delete functions
-    function deleteEntry(index, id) {
-      // if (!confirm("Are you sure you want to delete this entry?")) return;
-
-      visitData.splice(index, 1); // Remove entry
-      deleteRow(STORAGE_KEY, id);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(visitData));
-      renderTable();
-    }
-
-    // Filter functions
-    function filterByRestaurant() {
-      const filterValue = document.getElementById('restaurantFilter').value.trim().toLowerCase();
-      const table = document.getElementById('visitTable');
-      const rows = table.querySelectorAll('tbody tr');
-
-      rows.forEach(row => {
-        const restaurantCell = row.querySelector('td:nth-child(2)'); // assumes restaurant is 2nd column
-        if (!restaurantCell) return;
-
-        const restaurantName = restaurantCell.textContent.toLowerCase();
-        row.style.display = restaurantName.includes(filterValue) ? '' : 'none';
-      });
-    }
-
-    function clearFilter() {
-      document.getElementById('restaurantFilter').value = '';
-      filterByRestaurant(); // resets filter
-    }
-
-    // Initialize
-    applyTranslations(document);
-    loadVisitData();
-    renderTable();
-    updateSortIndicators();
+    window.addEventListener("DOMContentLoaded", async () => {
+      applyTranslations();
+      populateFilterColumns(state);
+      buildTableHeaders(state);
+      updateSortIndicators(state);
+      await loadHistoryData(state);
+    });
   </script>
 
 </body>

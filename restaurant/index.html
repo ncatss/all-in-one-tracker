@@ -12,18 +12,18 @@
 <script src="../js/form.js?v=1.0.0"></script>
 <body>
   <button class="topleftbutton" onclick="window.location.href='../index.html'" data-emoji="home"></button>
-  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal(document, 'helptext-restaurant')"></button>
+  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal('helptext-restaurant')"></button>
   </div>
     <div class="modal" id="helpModal">
     <div class="modal-content">
       <h3 data-i18n="help"></h3>
       <pre id="helpText" class="help-text"></pre>
-      <button class="cancel-btn" onclick="closeHelpModal(document)" data-emoji="cancel"></button>
+      <button class="cancel-btn" onclick="closeModal('helpModal')" data-emoji="cancel"></button>
     </div>
   </div>
 
   <div class="button-container">
-    <button class="big-btn" onclick="openAddModal(document, restaurantFields, initializeAutoFillListAndId)">
+    <button class="big-btn" onclick="openAddModal(restaurantFields, initializeAutoFillListAndId)">
       <div class="emoji" data-emoji="add"></div>
     </button>
     <button class="big-btn" onclick="window.location.href = 'history.html'">
@@ -47,12 +47,12 @@
       <div id="addRequiredInfoContainer">
       </div>
       <div class="form-row">
-        <input type="checkbox" id="addExtraInfoBox" onchange="toggleExtraInputs(document, restaurantFields)" />
+        <input type="checkbox" id="addExtraInfoBox" onchange="toggleExtraInputs(restaurantFields)" />
         <label for="addExtraInfoBox" data-i18n="addmoredetail"></label>
       </div>
       <div id="addExtraInfoContainer" style="display:none; flex-direction: column;"></div>
       <button onclick="submitAdd()" data-emoji="save"></button>
-      <button class="cancel-btn" onclick="closeAddModal(document)" data-emoji="cancel"></button>
+      <button class="cancel-btn" onclick="closeModal('addModal')" data-emoji="cancel"></button>
     </div>
   </div>
 
@@ -64,9 +64,9 @@
 
     // initialization
     window.addEventListener('DOMContentLoaded', async () => {
-      disableButtons(document);
-      applyTranslations(document);
-      enableButtons(document);
+      disableButtons();
+      applyTranslations();
+      enableButtons();
     });
 
     // add related
@@ -77,7 +77,7 @@
       if (nextId === 0) {
         const data = await loadFromGoogleSheet(SHEETNAME);
         if (data){
-          names = [...new Set(data.map((entry) => entry.name))]; // Unique names
+          names = [...new Set(data.map((entry) => entry.restaurant))]; // Unique names
           updateDatalistOptions();
           const existingIds = data.map(entry => entry.id);
           nextId = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
@@ -99,9 +99,9 @@
     }
 
     function submitAdd() {
-      const formData = getFormDataFromAdd(document, restaurantFields);
+      const formData = getFormData(restaurantFields);
       console.log("Form Data:", formData);
-      const name = formData.name;
+      const name = formData.restaurant;
       if (!name) {
         alert("Please enter a name");
         return;
@@ -116,7 +116,7 @@
       nextId++;
       saveNewVisit(SHEETNAME, newRow);
       addToGoogleSheet(SHEETNAME, newRow);
-      closeAddModal(document);
+      closeModal('addModal');
     }    
   </script>
 </body>
