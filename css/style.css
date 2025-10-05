@@ -230,6 +230,15 @@ button.waiting {
   opacity: 0.6;
 }
 
-/* button.waiting::after {
-  content: "⏳";
-} */
+#countdown {
+  font-size: 8rem;   /* default for desktop */
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Smaller screens */
+@media (max-width: 600px) {
+  #countdown {
+    font-size: 4rem; /* shrink on phones */
+  }
+}

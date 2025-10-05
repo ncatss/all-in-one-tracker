@@ -4,22 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>🍕</title>
-<link rel="stylesheet" href="../css/style.css?v=1.0.2" />
+<link rel="stylesheet" href="../css/style.css?v=1.0.3" />
 <link rel="stylesheet" href="../css/style-table.css?v=1.0.2" />
-<style>
-  #countdown {
-    font-size: 8rem;   /* default for desktop */
-    font-weight: bold;
-    text-align: center;
-  }
-
-  /* Smaller screens */
-  @media (max-width: 600px) {
-    #countdown {
-      font-size: 4rem; /* shrink on phones */
-    }
-  }
-</style>
 </head>
 <script src="../js/cloud.js?v=1.0.2"></script>
 <script src="../js/util.js?v=1.0.2"></script>
@@ -102,41 +88,6 @@
 
 
 <script>
-  // Update countdown display
-  function updateCountdown(state) {
-    const countdownEl = document.getElementById('countdown');
-    let currentLang = localStorage.getItem('lang') || 'en';
-    let translations = localStorage.getItem('translations') ? JSON.parse(localStorage.getItem('translations')) : {};
-    if (state.historicalData.length === 0) {
-      if (translations[currentLang] && translations[currentLang]['nopizzavisit']) {
-          countdownEl.textContent = translations[currentLang]['nopizzavisit'] + " 🍕";
-      }
-      else {
-          countdownEl.textContent = 'No pizza visits yet 🍕';
-      }
-      return;
-    }
-    // Find most recent date
-    const mostRecent = state.historicalData.reduce((a,b) => a.date > b.date ? a : b);
-    const daysPassed = daysSince(mostRecent.date.split('T')[0]);
-    const countdown = 60 - daysPassed;
-    if (countdown > 0) {
-      if (translations[currentLang] && translations[currentLang]['daysuntilnextpizza']) {
-          countdownEl.textContent  = countdown + " " + translations[currentLang]['daysuntilnextpizza'] + " 🍕";
-      }
-      else {
-          countdownEl.textContent = `${countdown} day${countdown !== 1 ? 's' : ''} until next pizza 🍕`;
-      }
-    } else {
-      if (translations[currentLang] && translations[currentLang]['timetohavepizza']) {
-          countdownEl.textContent = translations[currentLang]['timetohavepizza'] + " 🍕🎉";
-      }
-      else {
-          countdownEl.textContent = `It's time to have pizza! 🍕🎉`;
-      }
-    }
-  }
-
   // load data
   let state = { 
     SHEETNAME: 'PizzaVisits',
@@ -154,7 +105,7 @@
       value: null
     },
     addwithtable: true,
-    updatecountdown: true,
+    countdown: 60,
     editIndex: null,
     currentSort: { column: "date", asc: false }
   };
