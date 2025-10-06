@@ -25,7 +25,7 @@ you should be given a development id that you can copy, also a URL link that end
 you can also find the token in Deploy -> Manage deployment -> Deployment ID (Copy)
 
 ### Step5: Save to Website
-go to [website](https://ncatss.github.io/life-tracker/), hit ☁️, paste in the token (only need to do this once per device), save
+go to [website](https://ncatss.github.io/all-in-one-tracker/), hit ☁️, paste in the token (only need to do this once per device), save
 it will take a little bit to load the token & populated your table with necessary tables & headers
 then you will see a popup showing token valid - then you are good to go!
 
