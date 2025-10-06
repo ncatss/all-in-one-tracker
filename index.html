@@ -46,6 +46,14 @@
     </div>
   </div>
 
+  <div id="debugModal" class="modal">
+    <div class="modal-content">
+      <h3 data-i18n="loading"></h3>
+      <pre id="debugOutput" class="debug-text"></pre>
+      <button class="cancel-btn" onclick="closeModal('debugModal')" data-emoji="cancel"></button>
+    </div>
+  </div>
+
   <div class="toprightcontainer">
     <button class="clear-button" id="helpButton" data-emoji="help" onClick="openHelpModal('helptext')"></button>
     <div style="position: relative;">
@@ -103,12 +111,13 @@
     async function saveToken() {
       const token = tokenInput.value.trim();
       if (token) {
+        showDebugModal();
         const success = await verifyToken(token);
         if (success){
           localStorage.setItem(tokenKey, token);
-          alert(translations[currentLang]['tokensuccess']);
+          console.log(translations[currentLang]['tokensuccess']);
         } else{
-          alert(translations[currentLang]['tokenfailure']);
+          console.log(translations[currentLang]['tokenfailure']);
           return;
         }
       }
