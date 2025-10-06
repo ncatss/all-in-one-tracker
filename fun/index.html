@@ -13,7 +13,7 @@
 <script src="../js/modal.js?v=1.0.3"></script>
 <body>
   <button class="topleftbutton" onclick="window.location.href='../index.html'" data-emoji="home"></button>
-  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal(state.helpId)"></button>
+  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal('helptext-fun')"></button>
   </div>
     <div class="modal" id="helpModal">
     <div class="modal-content">
@@ -46,8 +46,17 @@
  
 </body>
 
-<script src="../js/util.js?v=1.0.0"></script>
 <script>
-  applyTranslations(document);
+    // fix mobile vertical viewport issue
+    setVh();
+    window.addEventListener('resize', setVh);
+    window.addEventListener('orientationchange', setVh);
+
+    // initialization
+    window.addEventListener('DOMContentLoaded', async () => {
+      disableButtons();
+      applyTranslations();
+      enableButtons();
+    });
 </script>
 </html>
