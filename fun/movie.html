@@ -29,7 +29,6 @@
   </div>
   <br />
   <br />
-  <div id="countdown"></div>
   <div class="filter-wrapper">
     <div class="form-row">
       <label for="historyRange" data-emoji="time"></label>
@@ -41,17 +40,41 @@
       </select>
     </div>
     <div class="form-row">
+      <label for="modeSelect" data-emoji="rotate"></label>
+      <select id="modeSelect" onchange="toggleMode(this.value)">
+        <option value="filter" data-i18n="filter"></option>
+        <option value="summary" data-i18n="summary"></option>
+      </select>
+    </div>
+    <div id="filterSection" class="form-row">
       <label for="filterColumnSelect" data-emoji="filter"></label>
       <select id="filterColumnSelect" onchange="renderFilterInput(state)"></select>
       <span id="filterInputWrapper"></span>
     </div>
+    <div id="groupAggSection" style="display:none">
+      <div class="form-row">
+        <label for="groupColumnSelect" data-i18n="groupby"></label>
+        <select id="groupColumnSelect" multiple onchange="updateSummary(state)"></select>
+      </div>
+      <div class="form-row">
+        <label for="aggColumnSelect" data-i18n="aggby"></label>
+        <select id="aggColumnSelect" multiple onchange="updateSummary(state)"></select>
+      </div>
+    </div>
   </div>
 
   <div style="overflow-x: auto;">
-    <table id="pizzaTable">
+    <table id="dataTable">
       <thead></thead>
       <tbody></tbody>
     </table>
+  </div>
+  <div class="modal" id="groupDetailModal">
+    <div class="modal-content">
+      <h3 data-i18n="groupdetails"></h3>
+      <div id="groupDetailTableWrapper"></div>
+      <button class="cancel-btn" onclick="closeModal('groupDetailModal')" data-emoji="cancel"></button>
+    </div>
   </div>
 
   <div class="modal" id="addModal">
@@ -90,13 +113,13 @@
 <script>
   // load data
   let state = { 
-    SHEETNAME: 'PizzaVisits',
-    helpId: 'helptext-restaurant-pizza',
+    SHEETNAME: 'ShowList',
+    helpId: 'helptext-aio',
     nextId: 0,
     historicalData: [],
     filteredData: [],
-    formFields: pizzaFields,
-    tableId: 'pizzaTable',
+    formFields: showfields,
+    tableId: 'dataTable',
     currentFilter: {
       column: null,
       type: null,
@@ -104,21 +127,22 @@
       to: null,
       value: null
     },
+    summary: false,
     addwithtable: true,
-    countdown: 60,
     editIndex: null,
+    groupByCols: ['showtype'],
+    aggCols: [],
     currentSort: { column: "date", asc: false }
   };
 
   window.addEventListener("DOMContentLoaded", async () => {
     disableButtons();
-    initializeFilterInput(state, true, false);
+    initializeFilterInput(state, true, true);
     applyHistoryRangeFromCache(state);
+    applyTranslations();
     await loadHistoryData(state);
-    updateCountdown(state);
     enableButtons();
   });
-  
 </script>
 
 </body>

@@ -98,12 +98,8 @@
 
     window.addEventListener("DOMContentLoaded", async () => {
       disableButtons();
-      populateFilterColumns(state);
-      buildTableHeaders(state);
-      updateSortIndicators(state);
-      if (localStorage['history_range' + state.SHEETNAME]){
-        document.getElementById("historyRange").value = localStorage['history_range'+ state.SHEETNAME];
-      }
+      initializeFilterInput(state, true, false);
+      applyHistoryRangeFromCache(state);
       await loadHistoryData(state);
       enableButtons();
     });

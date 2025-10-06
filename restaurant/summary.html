@@ -79,28 +79,17 @@
       filteredData: [],
       formFields: restaurantFields,
       tableId: 'summaryTable',
+      summary: true,
       groupByCols: ['restaurant'],
       aggCols: [],
       currentSort: { column: "count", asc: false }
     };
 
     window.addEventListener("DOMContentLoaded", async () => {
-      applyTranslations();
       disableButtons();
-
-      populateFilterColumns(state, 'group');
-      populateFilterColumns(state, 'agg');
-      const select = document.getElementById("groupColumnSelect");
-      const defaultValue = "restaurant";
-      const optionToSelect = [...select.options].find(opt => opt.value === defaultValue);
-      if (optionToSelect) {
-        optionToSelect.selected = true;
-      }
-      buildSummaryTableHeaders(state);
+      initializeFilterInput(state, false, true);
+      applyHistoryRangeFromCache(state);
       applyTranslations();
-      if (localStorage['history_range' + state.SHEETNAME]){
-        document.getElementById("historyRange").value = localStorage['history_range'+ state.SHEETNAME];
-      }
       await loadHistoryData(state);
       enableButtons();
     });
