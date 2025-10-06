@@ -73,9 +73,11 @@
     // add related
     let state = {
       SHEETNAME: 'RestaurantVisits',
+      get formFields() {
+        return startingForm[this.SHEETNAME]?.baseFields || [];
+      },
       helpId: 'helptext-restaurant',
       nextId: 0,
-      formFields: restaurantFields,
 
       /* optional */
       datalistkey: 'restaurant',

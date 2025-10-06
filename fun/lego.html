@@ -114,11 +114,13 @@
   // load data
   let state = { 
     SHEETNAME: 'LegoList',
+    get formFields() {
+      return startingForm[this.SHEETNAME]?.baseFields || [];
+    },
     helpId: 'helptext-aio',
     nextId: 0,
     historicalData: [],
     filteredData: [],
-    formFields: legoFields,
     tableId: 'dataTable',
     currentFilter: {
       column: null,

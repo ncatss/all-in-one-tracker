@@ -80,10 +80,12 @@
     // load data
     let state = { 
       SHEETNAME: 'RestaurantVisits',
+      get formFields() {
+        return startingForm[this.SHEETNAME]?.baseFields || [];
+      },
       helpId: 'helptext-history',
       historicalData: [],
       filteredData: [],
-      formFields: restaurantFields,
       tableId: 'historicTable',
       currentFilter: {
         column: null,

@@ -117,8 +117,10 @@
 <script>
   // load data
   let state = { 
-    SHEETNAME: 'Pet',
-    formFields: petFields,
+    SHEETNAME: 'PetList',
+    get formFields() {
+      return startingForm[this.SHEETNAME]?.baseFields || [];
+    },
     helpId: 'helptext-aio',
     nextId: 0,
     historicalData: [],

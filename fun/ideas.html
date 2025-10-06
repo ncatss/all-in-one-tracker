@@ -118,7 +118,9 @@
   // load data
   let state = { 
     SHEETNAME: 'IdeaList',
-    formFields: ideaFields,
+    get formFields() {
+      return startingForm[this.SHEETNAME]?.baseFields || [];
+    },
     helpId: 'helptext-aio',
     nextId: 0,
     historicalData: [],

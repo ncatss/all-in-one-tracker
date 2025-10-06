@@ -79,11 +79,13 @@
   <script>
     // load data
     let state = { 
-      SHEETNAME: 'TravelDetail',
+      SHEETNAME: 'TravelList',
+      get formFields() {
+        return startingForm[this.SHEETNAME]?.baseFields || [];
+      },
       helpId: 'helptext-history',
       historicalData: [],
       filteredData: [],
-      formFields: travelFields,
       tableId: 'historicTable',
       currentFilter: {
         column: null,

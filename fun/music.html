@@ -118,11 +118,13 @@
   // load data
   let state = { 
     SHEETNAME: 'SongList',
+    get formFields() {
+      return startingForm[this.SHEETNAME]?.baseFields || [];
+    },
     helpId: 'helptext-aio',
     nextId: 0,
     historicalData: [],
     filteredData: [],
-    formFields: songFields,
     tableId: 'dataTable',
     currentFilter: {
       column: null,

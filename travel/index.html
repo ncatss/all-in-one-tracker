@@ -107,15 +107,21 @@
 
     // add related
     let state = {
-      SHEETNAME: 'TravelDetail',
+      SHEETNAME: 'TravelList',
+      get formFields() {
+        return startingForm[this.SHEETNAME]?.baseFields || [];
+      },
+      get originalFormFields() {
+        return startingForm[this.SHEETNAME]?.baseFields || [];
+      },
+      get fieldOverrides() {
+        return startingForm[this.SHEETNAME]?.overrides || [];
+      },
       helpId: 'helptext-travel',
       historicalData: [],
       filteredData: [],
       nextId: 0,
-      formFields: travelFields,
-      originalFormFields: travelFields,
       eventtype: null,
-      fieldOverrides: travelFieldOverrides,
       currentFilter: {
         column: null,
         type: null,

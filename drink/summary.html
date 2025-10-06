@@ -73,11 +73,13 @@
   <script>
     // organized
     let state = { 
-      SHEETNAME: 'DrinkVisits',
+      SHEETNAME: 'DrinkList',
+      get formFields() {
+        return startingForm[this.SHEETNAME]?.baseFields || [];
+      },
       helpId: 'helptext-summary',
       historicalData: [],
       filteredData: [],
-      formFields: drinkFields,
       tableId: 'summaryTable',
       summary: true,
       groupByCols: ['place'],

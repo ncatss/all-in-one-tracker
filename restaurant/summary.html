@@ -74,10 +74,12 @@
     // organized
     let state = { 
       SHEETNAME: 'RestaurantVisits',
+      get formFields() {
+        return startingForm[this.SHEETNAME]?.baseFields || [];
+      },
       helpId: 'helptext-summary',
       historicalData: [],
       filteredData: [],
-      formFields: restaurantFields,
       tableId: 'summaryTable',
       summary: true,
       groupByCols: ['restaurant'],

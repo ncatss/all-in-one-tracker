@@ -90,12 +90,14 @@
 <script>
   // load data
   let state = { 
-    SHEETNAME: 'PizzaVisits',
+    SHEETNAME: 'PizzaList',
+    get formFields() {
+      return startingForm[this.SHEETNAME]?.baseFields || [];
+    },
     helpId: 'helptext-restaurant-pizza',
     nextId: 0,
     historicalData: [],
     filteredData: [],
-    formFields: pizzaFields,
     tableId: 'pizzaTable',
     currentFilter: {
       column: null,
