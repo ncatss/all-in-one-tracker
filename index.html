@@ -172,6 +172,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       const savedLang = localStorage.getItem('lang') || 'en'; // default to 'en'
       loadLang(savedLang);
+      showHelpOnFirstVisit();
     });
   </script>
 </body>
