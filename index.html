@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title data-emoji="robot"></title>
-  <link rel="stylesheet" href="css/style.css?v=1.0.0" />
-  <link rel="stylesheet" href="css/style-button.css?v=1.0.0" />
+  <link rel="stylesheet" href="css/style.css?v=1.0.3" />
+  <link rel="stylesheet" href="css/style-button.css?v=1.0.3" />
   <style>
     .langOption {
       display: block;
@@ -85,9 +85,9 @@
     </button>
   </div>
 
-  <script src="js/cloud.js?v=1.0.1"></script>
-  <script src="js/util.js?v=1.0.0"></script>
-  <script src="js/modal.js?v=1.0.0"></script>
+  <script src="js/cloud.js?v=1.0.3"></script>
+  <script src="js/util.js?v=1.0.3"></script>
+  <script src="js/modal.js?v=1.0.3"></script>
   <script>
     // cloud token related
     const tokenKey = 'google_token';
@@ -130,7 +130,7 @@
     let currentLang = 'en';
     async function loadLang(lang) {
       try {
-        const res = await fetch('lang.json?v=1.0.1');
+        const res = await fetch('lang.json?v=1.0.3');
         // const res = await fetch('lang.json', {
         //   cache: 'no-cache'
         // });
