@@ -53,6 +53,7 @@
   "en": {
     "cloud": "Set Cloud Token",
     "entertoken": "Enter Your token",
+    "entertripname": "Enter trip name..",
     "close": "Close",
     "save": "Save",
     "delete": "Delete",
@@ -157,6 +158,7 @@
   "ch": {
     "cloud": "云传输代码",
     "entertoken": "请输入你的代码",
+    "entertripname": "请输入行程名称",
     "close": "关闭",
     "save": "保存",
     "delete": "删除",
