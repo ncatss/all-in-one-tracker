@@ -102,7 +102,7 @@
       buildTableHeaders(state);
       updateSortIndicators(state);
       if (localStorage['history_range' + state.SHEETNAME]){
-        document.getElementById("historyRange").value = localStorage['history_range'];
+        document.getElementById("historyRange").value = localStorage['history_range' + state.SHEETNAME];
       }
       await loadHistoryData(state);
       enableButtons();
