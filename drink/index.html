@@ -38,10 +38,6 @@
     </button>
   </div>
 
-  <datalist id="placeList">
-    <!-- Options will be populated here by JS -->
-  </datalist>
-
   <div class="modal" id="addModal">
     <div class="modal-content" id="addModalContent">
       <h3 data-i18n="additem"></h3>
@@ -72,18 +68,11 @@
     });
 
     // add related
-    let state = {
-      SHEETNAME: 'DrinkList',
-      get formFields() {
-        return startingForm[this.SHEETNAME]?.baseFields || [];
-      },
-      helpId: 'helptext-drink',
-      nextId: 0,
-
-      /* optional */
-      datalistkey: 'place',
-      datalistid: 'placeList',
-      names: [],
-    };
+    let state = {};
+    window.addEventListener("DOMContentLoaded", async () => {
+      disableButtons();
+      populateState(state, 'DrinkList', 'helptext-drink');
+      enableButtons();
+    });
 </script>
 </html>

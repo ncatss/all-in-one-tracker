@@ -46,10 +46,6 @@
     </button>
   </div>
 
-  <datalist id="tripnameList">
-    <!-- Options will be populated here by JS -->
-  </datalist>
-
   <div class="modal" id="addModal">
     <div class="modal-content" id="addModalContent">
       <h3 data-i18n="additem"></h3>
@@ -70,7 +66,8 @@
       <div class="form-row">
         <label for="historyRange" data-emoji="time"></label>
         <select id="historyRange" onchange="loadHistoryData(state)">
-          <option value="lastMonth" selected data-i18n="lastmonth"></option>
+          <option value="present" selected data-i18n="present"></option>
+          <option value="lastMonth" data-i18n="lastmonth"></option>
           <option value="last3Months" data-i18n="last3month"></option>
           <option value="lastYear" data-i18n="lastyear"></option>
           <option value="all" data-i18n="all"></option>
@@ -98,49 +95,24 @@
     window.addEventListener('resize', setVh);
     window.addEventListener('orientationchange', setVh);
 
+    // add related
+    let state = {
+      eventtype: null,
+      addwithtable: true,
+    };
+
     // initialization
     window.addEventListener('DOMContentLoaded', async () => {
       disableButtons();
+      populateState(state, 'TravelList', 'helptext-travel', null, 'detail');
       applyTranslations();
       enableButtons();
     });
 
-    // add related
-    let state = {
-      SHEETNAME: 'TravelList',
-      get formFields() {
-        return startingForm[this.SHEETNAME]?.baseFields || [];
-      },
-      get originalFormFields() {
-        return startingForm[this.SHEETNAME]?.baseFields || [];
-      },
-      get fieldOverrides() {
-        return startingForm[this.SHEETNAME]?.overrides || [];
-      },
-      helpId: 'helptext-travel',
-      historicalData: [],
-      filteredData: [],
-      nextId: 0,
-      eventtype: null,
-      currentFilter: {
-        column: null,
-        type: null,
-        from: null,
-        to: null,
-        value: null
-      },
-      currentSort: { column: "date", asc: true },
-      addwithtable: true,
-
-      /* optional */
-      datalistkey: 'tripname',
-      datalistid: 'tripnameList',
-      names: [],
-    };
-
     async function searchByTrip(){
-      await loadHistoryData(state);
-
+      if (!state.historicalData){
+        await loadHistoryData(state);
+      }
       document.getElementById("filterModal").style.display = "flex";
     }
 
@@ -149,7 +121,7 @@
       state.currentFilter.column = 'tripname';
       state.currentFilter.value = tripName;
       filteredData = applyFilter(state);
-      showGroupDetails(filteredData, ['eventtype', 'agency', 'start', 'end', 'code']);
+      showGroupDetails(filteredData, state.detailCols);
     }
 
   </script>

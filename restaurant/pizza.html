@@ -89,31 +89,11 @@
 
 <script>
   // load data
-  let state = { 
-    SHEETNAME: 'PizzaList',
-    get formFields() {
-      return startingForm[this.SHEETNAME]?.baseFields || [];
-    },
-    helpId: 'helptext-restaurant-pizza',
-    nextId: 0,
-    historicalData: [],
-    filteredData: [],
-    tableId: 'pizzaTable',
-    currentFilter: {
-      column: null,
-      type: null,
-      from: null,
-      to: null,
-      value: null
-    },
-    addwithtable: true,
-    countdown: 60,
-    editIndex: null,
-    currentSort: { column: "date", asc: false }
-  };
+  let state = {};
 
   window.addEventListener("DOMContentLoaded", async () => {
     disableButtons();
+    populateState(state, 'PizzaList', 'helptext-restaurant-pizza', 'pizzaTable', 'filter', 60);
     initializeFilterInput(state, true, false);
     applyHistoryRangeFromCache(state);
     await loadHistoryData(state);

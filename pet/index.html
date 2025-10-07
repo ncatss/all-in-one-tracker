@@ -77,10 +77,6 @@
     </div>
   </div>
 
-  <datalist id="petnameList">
-    <!-- Options will be populated here by JS -->
-  </datalist>
-
   <div class="modal" id="addModal">
     <div class="modal-content" id="addModalContent">
       <h3 data-i18n="additem"></h3>
@@ -116,38 +112,11 @@
 
 <script>
   // load data
-  let state = { 
-    SHEETNAME: 'PetList',
-    get formFields() {
-      return startingForm[this.SHEETNAME]?.baseFields || [];
-    },
-    helpId: 'helptext-aio',
-    nextId: 0,
-    historicalData: [],
-    filteredData: [],
-    tableId: 'dataTable',
-    currentFilter: {
-      column: null,
-      type: null,
-      from: null,
-      to: null,
-      value: null
-    },
-    summary: false,
-    addwithtable: true,
-    editIndex: null,
-    groupByCols: ['eventtype'],
-    aggCols: [],
-    currentSort: { column: "date", asc: false },
-
-    /* optional */
-    datalistkey: 'petname',
-    datalistid: 'petnameList',
-    names: []
-  };
+  let state = {};
 
   window.addEventListener("DOMContentLoaded", async () => {
     disableButtons();
+    populateState(state, 'PetList', 'helptext-aio', 'dataTable', 'filtersummary');
     initializeFilterInput(state, true, true);
     applyHistoryRangeFromCache(state);
     applyTranslations();

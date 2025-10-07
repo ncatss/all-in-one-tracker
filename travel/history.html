@@ -39,7 +39,8 @@
     <div class="form-row">
       <label for="historyRange" data-emoji="time"></label>
       <select id="historyRange" onchange="loadHistoryData(state)">
-        <option value="lastMonth" selected data-i18n="lastmonth"></option>
+        <option value="present" selected data-i18n="present"></option>
+        <option value="lastMonth" data-i18n="lastmonth"></option>
         <option value="last3Months" data-i18n="last3month"></option>
         <option value="lastYear" data-i18n="lastyear"></option>
         <option value="all" data-i18n="all"></option>
@@ -78,28 +79,11 @@
 
   <script>
     // load data
-    let state = { 
-      SHEETNAME: 'TravelList',
-      get formFields() {
-        return startingForm[this.SHEETNAME]?.baseFields || [];
-      },
-      helpId: 'helptext-history',
-      historicalData: [],
-      filteredData: [],
-      tableId: 'historicTable',
-      currentFilter: {
-        column: null,
-        type: null,
-        from: null,
-        to: null,
-        value: null
-      },
-      editIndex: null,
-      currentSort: { column: "start", asc: true }
-    };
+    let state = {};
 
     window.addEventListener("DOMContentLoaded", async () => {
       disableButtons();
+      populateState(state, 'TravelList', 'helptext-history', 'historicTable', 'filter');
       initializeFilterInput(state, true, false);
       applyHistoryRangeFromCache(state);
       await loadHistoryData(state);

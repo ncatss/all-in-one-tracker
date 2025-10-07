@@ -72,23 +72,11 @@
 
   <script>
     // organized
-    let state = { 
-      SHEETNAME: 'DrinkList',
-      get formFields() {
-        return startingForm[this.SHEETNAME]?.baseFields || [];
-      },
-      helpId: 'helptext-summary',
-      historicalData: [],
-      filteredData: [],
-      tableId: 'summaryTable',
-      summary: true,
-      groupByCols: ['place'],
-      aggCols: [],
-      currentSort: { column: "count", asc: false }
-    };
+    let state = {};
 
     window.addEventListener("DOMContentLoaded", async () => {
       disableButtons();
+      populateState(state, 'DrinkList', 'helptext-summary', 'summaryTable', 'summary');
       initializeFilterInput(state, false, true);
       applyHistoryRangeFromCache(state);
       applyTranslations();

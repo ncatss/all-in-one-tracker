@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title data-emoji="lego"></title>
+<title data-emoji="ideas"></title>
 <link rel="stylesheet" href="../css/style.css?v=1.0.3" />
 <link rel="stylesheet" href="../css/style-table.css?v=1.0.3" />
 </head>
@@ -112,33 +112,11 @@
 
 <script>
   // load data
-  let state = { 
-    SHEETNAME: 'LegoList',
-    get formFields() {
-      return startingForm[this.SHEETNAME]?.baseFields || [];
-    },
-    helpId: 'helptext-aio',
-    nextId: 0,
-    historicalData: [],
-    filteredData: [],
-    tableId: 'dataTable',
-    currentFilter: {
-      column: null,
-      type: null,
-      from: null,
-      to: null,
-      value: null
-    },
-    summary: false,
-    addwithtable: true,
-    editIndex: null,
-    groupByCols: ['actiontype'],
-    aggCols: [],
-    currentSort: { column: "date", asc: false }
-  };
+  let state = {};
 
   window.addEventListener("DOMContentLoaded", async () => {
     disableButtons();
+    populateState(state, 'HappyList', 'helptext-aio', 'dataTable', 'filtersummary');
     initializeFilterInput(state, true, true);
     applyHistoryRangeFromCache(state);
     applyTranslations();
