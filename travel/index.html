@@ -120,8 +120,9 @@
       const tripName = document.getElementById("tripNameInput").value.trim();
       state.currentFilter.column = 'tripname';
       state.currentFilter.value = tripName;
-      filteredData = applyFilter(state);
-      showGroupDetails(filteredData, state.detailCols);
+      state.filteredData = applyFilter(state);
+      sortData(state);
+      showGroupDetails(state.filteredData, state.detailCols);
     }
 
   </script>
