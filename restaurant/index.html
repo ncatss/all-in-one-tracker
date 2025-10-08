@@ -1,78 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title data-emoji="restaurant"></title>
-  <link rel="stylesheet" href="../css/style.css?v=1.0.3" />
-  <link rel="stylesheet" href="../css/style-button.css?v=1.0.3" />
-</head>
-<script src="../js/cloud.js?v=1.0.3"></script>
-<script src="../js/util.js?v=1.0.3"></script>
-<script src="../js/form.js?v=1.0.3"></script>
-<script src="../js/modal.js?v=1.0.3"></script>
+<script src="../js/render.js?v=1.0.3"></script>
 <body>
-  <button class="topleftbutton" onclick="window.location.href='../index.html'" data-emoji="home"></button>
-  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal(state.helpId)"></button>
-  </div>
-    <div class="modal" id="helpModal">
-    <div class="modal-content">
-      <h3 data-i18n="help"></h3>
-      <pre id="helpText" class="help-text"></pre>
-      <button class="cancel-btn" onclick="closeModal('helpModal')" data-emoji="cancel"></button>
-    </div>
-  </div>
-
-  <div class="button-container">
-    <button class="big-btn" onclick="openAddModal(state)">
-      <div class="emoji" data-emoji="add"></div>
-    </button>
-    <button class="big-btn" onclick="window.location.href = 'history.html'">
-      <div class="emoji" data-emoji="history"></div>
-    </button>
-    <button class="big-btn" onclick="window.location.href = 'summary.html'">
-      <div class="emoji" data-emoji="summary"></div>
-    </button>
-    <button class="big-btn" onclick="window.location.href = 'pizza.html'">
-      <div class="emoji" data-emoji="pizza"></div>
-    </button>
-  </div>
-
-  <div class="modal" id="addModal">
-    <div class="modal-content" id="addModalContent">
-      <h3 data-i18n="additem"></h3>
-      <div id="addRequiredInfoContainer">
-      </div>
-      <div class="form-row">
-        <input type="checkbox" id="addExtraInfoBox" onchange="toggleExtraInputs(state.formFields)" />
-        <label for="addExtraInfoBox" data-i18n="addmoredetail"></label>
-      </div>
-      <div id="addExtraInfoContainer" style="display:none; flex-direction: column;"></div>
-      <button onclick="submitAdd(state)" data-emoji="save"></button>
-      <button class="cancel-btn" onclick="closeModal('addModal')" data-emoji="cancel"></button>
-    </div>
-  </div>
-
   <script>
-    // fix mobile vertical viewport issue
-    setVh();
-    window.addEventListener('resize', setVh);
-    window.addEventListener('orientationchange', setVh);
-
-    // initialization
-    window.addEventListener('DOMContentLoaded', async () => {
-      disableButtons();
-      applyTranslations();
-      enableButtons();
-    });
-
     // add related
     let state = {};
-
     window.addEventListener("DOMContentLoaded", async () => {
-      disableButtons();
-      populateState(state, 'RestaurantVisits', 'helptext-restaurant');
-      enableButtons();
+      renderPage('restaurant', state);
     });
 
   </script>

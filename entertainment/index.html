@@ -1,62 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-emoji="fun"></title>
-  <link rel="stylesheet" href="../css/style.css?v=1.0.0" />
-  <link rel="stylesheet" href="../css/style-button.css?v=1.0.0" />
-</head>
-<script src="../js/cloud.js?v=1.0.3"></script>
-<script src="../js/util.js?v=1.0.3"></script>
-<script src="../js/form.js?v=1.0.3"></script>
-<script src="../js/modal.js?v=1.0.3"></script>
+<html>
+<script src="../js/render.js?v=1.0.3"></script>
 <body>
-  <button class="topleftbutton" onclick="window.location.href='../index.html'" data-emoji="home"></button>
-  <button class="toprightbutton" id="helpButton" data-emoji="help" onclick="openHelpModal('helptext-fun')"></button>
-  </div>
-    <div class="modal" id="helpModal">
-    <div class="modal-content">
-      <h3 data-i18n="help"></h3>
-      <pre id="helpText" class="help-text"></pre>
-      <button class="cancel-btn" onclick="closeModal('helpModal')" data-emoji="cancel"></button>
-    </div>
-  </div>
-
-   <div class="button-container">
-    <button class="big-btn" onclick="window.location.href = 'movie.html'">
-      <div class="emoji" data-emoji="movies"></div>
-    </button>
-    <button class="big-btn" onclick="window.location.href = 'lego.html'">
-      <div class="emoji" data-emoji="lego"></div>
-    </button>
-    <button class="big-btn" onclick="window.location.href = 'activity.html'">
-      <div class="emoji" data-emoji="fun"></div>
-    </button>
-    <button class="big-btn" onclick="window.location.href = 'music.html'">
-      <div class="emoji" data-emoji="music"></div>
-    </button>
-    <button class="big-btn" onclick="window.location.href = 'ideas.html'">
-      <div class="emoji" data-emoji="ideas"></div>
-    </button>
-    <button class="big-btn" onclick="window.location.href = 'happy.html'">
-      <div class="emoji" data-emoji="happy"></div>
-    </button>
-  </div>
- 
-</body>
-
-<script>
-    // fix mobile vertical viewport issue
-    setVh();
-    window.addEventListener('resize', setVh);
-    window.addEventListener('orientationchange', setVh);
-
-    // initialization
-    window.addEventListener('DOMContentLoaded', async () => {
-      disableButtons();
-      applyTranslations();
-      enableButtons();
+  <script>
+    // add related
+    let state = {};
+    window.addEventListener("DOMContentLoaded", async () => {
+      renderPage('entertainment', state);
     });
-</script>
+
+  </script>
+</body>
 </html>

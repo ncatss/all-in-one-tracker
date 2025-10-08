@@ -31,3 +31,11 @@ th {
     margin-left: 0;   /* align flush left */
   }
 }
+
+#filterColumnSelect {
+  margin-right: 8px;
+}
+
+#filterInputWrapper {
+  margin-left: 8px;
+}

@@ -242,3 +242,24 @@ button.waiting {
     font-size: 4rem; /* shrink on phones */
   }
 }
+
+.langOption {
+  display: block;
+  width: 100%;
+  padding: 4px 8px;    /* less padding */
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  margin: 0;           /* no margin between */
+}
+#langMenu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
