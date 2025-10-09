@@ -6,7 +6,8 @@
     // translation
     let state = {};
     window.addEventListener('DOMContentLoaded', () => {
-      renderPage('home', state);
+      const lastPageKey = localStorage.getItem('lastPageKey') || 'home';
+      renderPage(lastPageKey, state);
     });
   </script>
 </body>
