@@ -41,5 +41,5 @@ everything is saved local, so if you wanna view/update across devices (like betw
 you will need to create a google apps script token to use the cloud functionality, use ☁️ to add/update/delete the token.
 see cloud_instructions.md for more details
 
-TODO:
-setting option to update table, customize displayed button etc
+
+UPDATE: we can toggle display / edit / delete/ add on all buttons(access from pages with buttons), sheets(access from main page), columns(access from pages has a table set) now!!
