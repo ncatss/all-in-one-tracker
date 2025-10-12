@@ -241,6 +241,9 @@ button.waiting {
   #countdown {
     font-size: 4rem; /* shrink on phones */
   }
+  .modal-content {
+    max-height: 80vh;
+  }
 }
 
 .langOption {
