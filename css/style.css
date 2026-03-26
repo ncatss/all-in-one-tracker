@@ -394,3 +394,98 @@ button.waiting {
     width: 100%;
   }
 }
+
+.debug-modal-content {
+  display: flex;
+  flex-direction: column;
+  width: min(92vw, 900px);
+  max-width: 900px;
+  height: min(85vh, 720px);
+  max-height: 85vh;
+  overflow: hidden;
+}
+
+.debug-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.debug-modal-header h3 {
+  margin: 0;
+}
+
+.debug-modal-close {
+  position: static;
+  margin-left: auto;
+}
+
+.debug-text {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+.group-detail-modal-content {
+  display: flex;
+  flex-direction: column;
+  width: min(92vw, 1100px);
+  max-width: 1100px;
+  height: min(85vh, 760px);
+  max-height: 85vh;
+  overflow: hidden;
+}
+
+.group-detail-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+}
+
+.group-detail-modal-header h3 {
+  margin: 0;
+}
+
+.group-detail-modal-close {
+  position: static;
+  margin-left: auto;
+}
+
+#groupDetailTableWrapper {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+#groupDetailTable {
+  width: 100%;
+}
+
+#groupDetailModal,
+#filterModal {
+  z-index: 1102;
+}
+
+@media (max-width: 600px) {
+  .group-detail-modal-content {
+    width: min(96vw, 1100px);
+    height: min(72vh, 620px);
+    max-height: 72vh;
+    padding: 16px;
+  }
+
+  .group-detail-modal-header {
+    margin-bottom: 8px;
+  }
+}
+
