@@ -489,3 +489,20 @@ button.waiting {
   }
 }
 
+.settings-inline-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.button-reorder-btn {
+  font-size: 14px;
+  line-height: 1;
+  padding: 4px 6px;
+}
+
+.button-reorder-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
