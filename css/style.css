@@ -506,3 +506,91 @@ button.waiting {
   cursor: default;
 }
 
+.restaurant-dish-split-btn {
+  margin-left: 8px;
+  padding: 6px 10px;
+}
+
+.restaurant-dish-batch-container {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.restaurant-dish-entry {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.restaurant-dish-entry h4 {
+  margin: 0 0 8px;
+}
+
+#addModal {
+  align-items: flex-start;
+  padding: 64px 12px 64px;
+  box-sizing: border-box;
+}
+
+.add-item-modal-content {
+  display: flex;
+  flex-direction: column;
+  width: min(92vw, 620px);
+  max-width: 620px;
+  max-height: calc(100vh - 128px);
+  overflow: hidden;
+}
+
+.add-item-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.add-item-modal-header h3 {
+  margin: 0;
+}
+
+.add-item-modal-close {
+  position: static;
+  margin-left: auto;
+}
+
+.add-item-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.add-item-modal-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  padding-top: 12px;
+  background: #fff;
+  border-top: 1px solid #eee;
+}
+
+.restaurant-dish-split-btn {
+  margin-left: 8px;
+  padding: 6px 10px;
+}
+
+@media (max-width: 600px) {
+  #addModal {
+    padding: 72px 12px 72px;
+  }
+
+  .add-item-modal-content {
+    width: min(96vw, 620px);
+    max-height: calc(100vh - 144px);
+  }
+}
+
