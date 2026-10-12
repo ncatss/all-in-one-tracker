@@ -1,45 +1,42 @@
-# all-in-one-tracker
-it's a centralized place that tracks daily things like restaurant visits, pet flee & tick, flight start/end time, reservation code etc
+# All-in-One Tracker
 
-I started doing this because I like to record everything - and I wanted a centralized spot for myself to find everything
-and I wanted it to be a little bit more simple & user friendlier than going to sheets. so here we are!
+A personal tracker for everyday things: meals, drinks, travel, hobbies, health, and pets. The interface is a set of emoji menus, with table views for records and summaries.
 
-main sections are mostly based off 吃喝玩乐(eat, drink, travel, entertainment), and I'm just adding whatever I need as I go
+## Use the app
 
-- 吃🍽️ - tracks restaurants! Never go to same bad place again!
-  - ➕ add new visit
-  - 📜 show all visits history (can be filtered by value in selected column, and also sorted asc/dsc by any column)
-  - 📊 show summary - it will group data based on selected "GroupBy" columns, and then display summary of data in "AggBy" columns - 
-  - 🍕 pizza-day countdown - I made a vow to eat pizza for my husband once per two months, so here we go
+- On the home page, drag a section emoji to the small home emoji in the center to open that section. Menus work with mouse or touch.
+- In Health, drag an action emoji to the heart in the center to record it. The current local date and time are added automatically. Use the table button at the top right for the Health summary, and the add button to manage the available actions.
+- Configure a reusable record circle in Settings → Buttons: choose **Record Values Circle**, select a sheet, choose a fixed field and value, then choose a select field. Each option in that field becomes a record action. For example, add a Bailey button fixed to `name = Bailey` and use `type` as the record field, then add an Isla button fixed to `name = Isla` with the same `type` field.
+- Drag a record action to the center to save it with the configured fixed value and the current local date and time. The circle's **Add** button opens the regular add form with the fixed value filled in; **Table** opens that sheet's summary. Set **select emoji** on the record field to show its options as emoji; leave it off to show the English option text.
+- Other sections have their own add, history, summary, and detail views. Their top-right controls and Settings vary by page.
+- Open Settings (⚙️) to show or hide, add, edit, or delete available buttons, columns, and sheets. Some deletes require unlocking with the lock control.
+- The cloud button (☁️) opens token and profile settings. Encrypt and decrypt controls let you share a token as encrypted text plus a separate four-digit code.
 
-- 喝🧋 - tracks drinks 🧋🍺☕, remember favorite flavors!
+## Sections
 
-  - same ➕📜📊, just for drinks
+- **🍽️ Restaurant** — visits, meals, filters, summaries, and the pizza countdown.
+- **🧋 Drinks** — drinks and favorite flavors.
+- **✈️ Travel** — flights, rental cars, hotels, activities, and reservations.
+- **🎮 Hobbies** — media, projects, activities, ideas, songs, and happy moments.
+- **❤️ Health** — quick action logging and a table summary.
+- **🐾 Pets** — care schedules, memories, and health or behavior notes.
 
-- 玩✈️ - tracks travel details ✈️🚗🏨, no more going back to email over and over just to pull up landing time!
-  - ✈️: add flight detail.
-  - 🚗: add rental car detail.
-  - 🏨: add hotel detail.
-  - 📅: add activity and other reservation detail.
-  - 🧳: search all items for selected trip.
-  - 📜: View history with filter & sort options.
+## Run locally
 
-- 乐🎮 - tracks hobbies! 🎬📺🐉,🧱📈🏋️💡.
-  - 🎬: record tv shows/movies/animes, watchlist.
-  - 🧱: record lego purchases & finish building time.
-  - 🎵: songs stuck in head/liked songs.
-  - 🎮: activities, mostly things doing with other people.
-  - 💡: random ideas come to mind.
-  - 🤩: things that made me happy.
+This is a static site. From the project folder, start a local server:
 
-- ❤️ - tracks health, abnormal symptoms etc
+```powershell
+py -m http.server 8080 --bind 0.0.0.0
+```
 
-- 🐾 - tracks pets! flee & tick, bath schedule, fun memories, abnormal behavior 
+On the same computer, open <http://localhost:8080/>. To test from a phone on the same Wi-Fi, open `http://<computer-LAN-IP>:8080/`. Allow Python through the private-network firewall if Windows asks. The phone and computer must be on the same local network; `localhost` on the phone points to the phone itself.
 
-A little bit extra:
-everything is saved local, so if you wanna view/update across devices (like between phone & laptop etc)
-you will need to create a google apps script token to use the cloud functionality, use ☁️ to add/update/delete the token.
-see cloud_instructions.md for more details
+## Local and cloud data
 
+Without a cloud token, records are stored in this browser's local storage and are not automatically shared with other devices. Configure a Google Apps Script token using the ☁️ button to use the cloud sync features; see [cloud instructions](cloud_instructions.md).
 
-UPDATE: we can toggle display / edit / delete/ add on all buttons(access from pages with buttons), sheets(access from main page), columns(access from pages has a table set) now!!
+When the **default** profile token is saved, the app requests the button layout, translations, and sheet definitions in parallel and caches the returned configuration in this browser. Existing local configuration is kept in place, so saving a token does not overwrite a layout already stored on the device. Cloud-backed record data is fetched from Google Apps Script when needed; the current page session keeps an in-memory per-sheet cache for up to five minutes. This reduces repeat requests, but does not guarantee faster first loads or uploads, which still depend on the network and Apps Script response time.
+
+## Configuration and help
+
+The in-app Help button describes the current page. For cloud setup details, see [cloud instructions](cloud_instructions.md). Page layouts, translations, and sheet field definitions can also be adjusted in Settings; use the layout controls to export or import layouts when moving them between devices.
