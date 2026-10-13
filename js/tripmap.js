@@ -855,44 +855,72 @@ function drawTripMapShareCard(canvas, trip, includeTiles, options, layout) {
 function drawTripMapShareRoute(context, mapBox, mapRect) {
   if (!mapRect?.width || !mapRect?.height || !tripMapInstance) return;
   const mapScale = Math.min(mapBox.width / mapRect.width, mapBox.height / mapRect.height);
+  const symbolScale = getTripMapShareSymbolScale(mapScale);
   const offsetX = (mapBox.width - mapRect.width * mapScale) / 2;
   const offsetY = (mapBox.height - mapRect.height * mapScale) / 2;
+  const phoneLayout = window.matchMedia("(max-width: 720px)").matches;
+  const previous = { point: null };
   tripMapRouteSvg?.querySelectorAll("circle").forEach(dot => {
     const x = Number(dot.getAttribute("cx"));
     const y = Number(dot.getAttribute("cy"));
     if (!Number.isFinite(x) || !Number.isFinite(y)) return;
-    drawTripMapShareDot(context, mapBox.x + offsetX + x * mapScale, mapBox.y + offsetY + y * mapScale,
-      Number(dot.getAttribute("r") || 4) * mapScale, dot.getAttribute("fill") || "#e85d04");
+    const point = { x: mapBox.x + offsetX + x * mapScale, y: mapBox.y + offsetY + y * mapScale };
+    const color = dot.getAttribute("fill") || "#e85d04";
+    if (phoneLayout && previous.point) {
+      const distance = Math.hypot(point.x - previous.point.x, point.y - previous.point.y);
+      const maxJoinDistance = mapScale * 21;
+      if (distance > 0.1 && distance <= maxJoinDistance) {
+        const steps = Math.ceil(distance / 10);
+        for (let step = 1; step < steps; step++) {
+          const progress = step / steps;
+          drawTripMapShareDot(context,
+            previous.point.x + (point.x - previous.point.x) * progress,
+            previous.point.y + (point.y - previous.point.y) * progress,
+            Number(dot.getAttribute("r") || 4) * symbolScale, color);
+        }
+      }
+    }
+    drawTripMapShareDot(context, point.x, point.y,
+      Number(dot.getAttribute("r") || 4) * symbolScale, color);
+    previous.point = point;
   });
+}
+
+function getTripMapShareSymbolScale(mapScale) {
+  return window.matchMedia("(max-width: 720px)").matches ? Math.min(mapScale, 0.55) : mapScale;
 }
 
 function drawTripMapShareMarkers(context, mapBox, mapRect, trip) {
   if (!mapRect?.width || !mapRect?.height || !tripMapInstance) return;
-  const scale = Math.min(mapBox.width / mapRect.width, mapBox.height / mapRect.height);
-  const offsetX = (mapBox.width - mapRect.width * scale) / 2;
-  const offsetY = (mapBox.height - mapRect.height * scale) / 2;
+  const mapScale = Math.min(mapBox.width / mapRect.width, mapBox.height / mapRect.height);
+  const symbolScale = getTripMapShareSymbolScale(mapScale);
+  const offsetX = (mapBox.width - mapRect.width * mapScale) / 2;
+  const offsetY = (mapBox.height - mapRect.height * mapScale) / 2;
   const plotPoint = point => {
     const projected = tripMapInstance.latLngToContainerPoint([point.lat, point.lng]);
-    return { x: mapBox.x + offsetX + projected.x * scale, y: mapBox.y + offsetY + projected.y * scale };
+    return { x: mapBox.x + offsetX + projected.x * mapScale, y: mapBox.y + offsetY + projected.y * mapScale };
   };
   const selectedTrip = tripMapTrips.find(item => String(item.id) === String(trip.id));
   const tripCoordinates = getTripMapCoordinates(selectedTrip);
-  if (tripCoordinates) drawTripMapShareMarker(context, plotPoint(tripCoordinates), "✈️", 22 * scale);
+  if (tripCoordinates) drawTripMapShareMarker(context, plotPoint(tripCoordinates), "✈️", 22 * symbolScale);
   getStopsForTrip(selectedTrip || {}).forEach(stop => {
     const coordinates = getTripMapCoordinates(stop);
-    if (coordinates) drawTripMapShareMarker(context, plotPoint(coordinates), getTripMapCategoryEmoji(stop.category), 17 * scale);
+    if (coordinates) drawTripMapShareMarker(context, plotPoint(coordinates), getTripMapCategoryEmoji(stop.category), 17 * symbolScale);
   });
 }
 
 function drawTripMapShareMarker(context, point, emoji, radius) {
-  context.beginPath();
-  context.arc(point.x, point.y, radius, 0, Math.PI * 2);
-  context.fillStyle = "#ffffff";
-  context.fill();
-  context.strokeStyle = "#ffffff";
-  context.lineWidth = 3;
-  context.stroke();
-  context.font = `${Math.max(18, radius * 1.5)}px system-ui, sans-serif`;
+  const compactPhoneMarker = window.matchMedia("(max-width: 720px)").matches;
+  if (!compactPhoneMarker) {
+    context.beginPath();
+    context.arc(point.x, point.y, radius, 0, Math.PI * 2);
+    context.fillStyle = "#ffffff";
+    context.fill();
+    context.strokeStyle = "#ffffff";
+    context.lineWidth = 3;
+    context.stroke();
+  }
+  context.font = `${compactPhoneMarker ? Math.max(12, radius * 1.35) : Math.max(18, radius * 1.5)}px system-ui, sans-serif`;
   context.textAlign = "center";
   context.textBaseline = "middle";
   context.fillText(emoji, point.x, point.y);
@@ -904,7 +932,7 @@ function drawTripMapShareDot(context, x, y, radius, color) {
   context.fillStyle = color;
   context.fill();
   context.strokeStyle = "#ffffff";
-  context.lineWidth = 3;
+  context.lineWidth = window.matchMedia("(max-width: 720px)").matches ? 1 : 3;
   context.stroke();
 }
 
