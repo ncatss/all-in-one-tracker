@@ -798,6 +798,29 @@ button.waiting {
 .trip-map-modal-actions button { padding: 10px 12px; border: 1px solid #d5dce6; background: #f8fafc; }
 .trip-map-modal-actions .primary-button, .primary-button { border: 1px solid #2563a7; background: #2563a7; color: #fff; }
 .trip-map-toast { position: fixed; left: 50%; bottom: 22px; z-index: 1200; transform: translate(-50%, 16px); padding: 11px 16px; border-radius: 999px; background: #173b2d; color: #fff; box-shadow: 0 5px 18px #0003; opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; }
+
+.summary-calendar-share-button { align-self: flex-start; margin: 4px 0 8px auto; padding: 8px 12px; border: 1px solid #d5dce6; border-radius: 10px; background: #fff; font-size: 20px; cursor: pointer; }
+.summary-calendar-share-button[hidden] { display: none; }
+.summary-calendar-share-modal { z-index: 1500; }
+.summary-calendar-share-content { display: grid; gap: 12px; width: min(96vw, 1240px); max-width: 1240px; max-height: 92vh; overflow: auto; }
+.summary-calendar-share-header, .summary-calendar-category-header, .summary-calendar-share-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.summary-calendar-share-header h2 { margin: 0; }
+.summary-calendar-share-header button, .summary-calendar-category-header button, .summary-calendar-share-actions button { padding: 8px 12px; border: 1px solid #d5dce6; border-radius: 9px; background: #f8fafc; cursor: pointer; }
+.summary-calendar-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.summary-calendar-controls label { display: flex; align-items: center; gap: 6px; color: #344054; }
+.summary-calendar-controls select { min-height: 36px; padding: 6px 9px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; }
+.summary-calendar-category-header > div { display: flex; gap: 6px; }
+.summary-calendar-categories { display: flex; flex-wrap: wrap; gap: 7px 14px; max-height: 112px; overflow: auto; padding: 9px; border: 1px solid #e0e6ef; border-radius: 9px; background: #f8fafc; }
+.summary-calendar-categories label { display: inline-flex; align-items: center; gap: 5px; }
+.summary-calendar-preview { display: block; width: 100%; height: auto; border: 1px solid #e0e6ef; border-radius: 10px; background: #f4f7fb; }
+.summary-calendar-status { margin: 0; color: #64748b; font-size: 13px; }
+.summary-calendar-share-actions { justify-content: flex-end; }
+@media (max-width: 560px) {
+  .summary-calendar-share-content { width: calc(100vw - 16px); padding: 12px; }
+  .summary-calendar-controls { align-items: stretch; }
+  .summary-calendar-controls label { flex: 1 1 100%; justify-content: space-between; }
+  .summary-calendar-controls select { flex: 1; max-width: 65%; }
+}
 .trip-map-toast-visible { transform: translate(-50%, 0); opacity: 1; }
 @media (max-width: 720px) {
   .trip-map-page { padding: 58px 8px 10px; }
