@@ -32,14 +32,20 @@ function openSummaryCalendarShare() {
 
   const controls = document.createElement("div");
   controls.className = "summary-calendar-controls";
-  const fieldSelect = document.createElement("select");
-  fieldSelect.id = "summaryCalendarField";
+  const fieldChoices = document.createElement("div");
+  fieldChoices.id = "summaryCalendarFields";
+  fieldChoices.className = "summary-calendar-fields";
   const fields = [...new Set((state.aggCols || []).map(value => String(value).split("|")[0]))];
   fields.forEach(field => {
-    const option = document.createElement("option");
-    option.value = field;
-    option.textContent = getSummaryCalendarText(field, "text");
-    fieldSelect.appendChild(option);
+    const label = document.createElement("label");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = field;
+    checkbox.checked = true;
+    const text = document.createElement("span");
+    text.textContent = getSummaryCalendarText(field, "text");
+    label.append(checkbox, text);
+    fieldChoices.appendChild(label);
   });
   const dateField = state.formFields?.find(field => field.label === "date")?.label || "date";
   const rows = (state.filteredData || []).flatMap(group => group._details || []);
@@ -76,7 +82,13 @@ function openSummaryCalendarShare() {
   const emojiSetting = firstField?.selectEmoji ?? firstField?.select_emoji ?? firstField?.emoji;
   displaySelect.value = emojiSetting === true || String(emojiSetting).toLowerCase() === "true" ? "emoji" : "text";
 
-  [ ["Aggregate", fieldSelect], ["Range", rangePreset], ["From", startDateInput], ["To", endDateInput], ["Show as", displaySelect] ].forEach(([labelText, select]) => {
+  const combineControl = document.createElement("div");
+  combineControl.className = "summary-calendar-combine-control";
+  const combineLabel = document.createElement("span");
+  combineLabel.textContent = "Combine";
+  combineControl.append(combineLabel, fieldChoices);
+  controls.appendChild(combineControl);
+  [ ["Range", rangePreset], ["From", startDateInput], ["To", endDateInput], ["Show as", displaySelect] ].forEach(([labelText, select]) => {
     const label = document.createElement("label");
     label.append(document.createTextNode(`${labelText} `), select);
     controls.appendChild(label);
@@ -126,18 +138,26 @@ function openSummaryCalendarShare() {
   modal.style.display = "flex";
 
   const populateCategories = () => {
-    const field = fieldSelect.value;
-    const values = [...new Set(rows.map(row => String(row[field] ?? "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    const selectedFields = [...fieldChoices.querySelectorAll("input:checked")].map(input => input.value);
+    const combinations = new Map();
+    rows.forEach(row => {
+      const values = selectedFields.map(field => String(row[field] ?? "").trim());
+      if (!values.some(Boolean)) return;
+      combinations.set(JSON.stringify(values), values);
+    });
+    const values = [...combinations.values()].sort((a, b) =>
+      getSummaryCalendarComboText(a, selectedFields, "text").localeCompare(getSummaryCalendarComboText(b, selectedFields, "text"))
+    );
     categories.replaceChildren();
-    values.forEach(value => {
+    values.forEach(combo => {
       const label = document.createElement("label");
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
-      checkbox.value = value;
+      checkbox.value = JSON.stringify(combo);
       checkbox.checked = true;
       checkbox.addEventListener("change", drawPreview);
       const text = document.createElement("span");
-      text.textContent = getSummaryCalendarText(value, "text");
+      text.textContent = getSummaryCalendarComboText(combo, selectedFields, "text");
       label.append(checkbox, text);
       categories.appendChild(label);
     });
@@ -145,7 +165,7 @@ function openSummaryCalendarShare() {
   };
   selectAll.onclick = () => { categories.querySelectorAll("input").forEach(input => input.checked = true); drawPreview(); };
   clearAll.onclick = () => { categories.querySelectorAll("input").forEach(input => input.checked = false); drawPreview(); };
-  fieldSelect.addEventListener("change", populateCategories);
+  fieldChoices.addEventListener("change", populateCategories);
   rangePreset.addEventListener("change", () => {
     if (rangePreset.value !== "custom") applySummaryCalendarPreset(rangePreset.value, latestDate, dateField, startDateInput, endDateInput);
     drawPreview();
@@ -172,9 +192,13 @@ function openSummaryCalendarShare() {
   function drawPreview() {
     const startDate = startDateInput.value;
     const endDate = endDateInput.value;
-    const field = fieldSelect.value;
+    const selectedFields = [...fieldChoices.querySelectorAll("input:checked")].map(input => input.value);
     const mode = displaySelect.value;
     const selected = new Set([...categories.querySelectorAll("input:checked")].map(input => input.value));
+    if (!selectedFields.length) {
+      status.textContent = "Select at least one aggregate field to build calendar values.";
+      return;
+    }
     if (startDate && endDate && startDate > endDate) {
       status.textContent = "The start date must be on or before the end date.";
       return;
@@ -183,9 +207,9 @@ function openSummaryCalendarShare() {
       status.textContent = "Finish entering both dates to refresh the calendar.";
       return;
     }
-    drawSummaryCalendar(preview, rows, dateField, field, selected, mode, startDate, endDate);
+    drawSummaryCalendar(preview, rows, dateField, selectedFields, selected, mode, startDate, endDate);
     status.textContent = startDate && endDate
-      ? `${startDate} – ${endDate} · ${selected.size} value${selected.size === 1 ? "" : "s"} selected`
+      ? `${startDate} – ${endDate} · ${selectedFields.length} field${selectedFields.length === 1 ? "" : "s"} · ${selected.size} combination${selected.size === 1 ? "" : "s"} selected`
       : "No dated summary rows to display.";
   }
 }
@@ -228,7 +252,15 @@ function getSummaryCalendarText(value, mode) {
   return translation.emoji?.[raw] || ( /\p{Extended_Pictographic}/u.test(raw) ? raw : "");
 }
 
-function drawSummaryCalendar(canvas, rows, dateField, valueField, selectedValues, displayMode, rangeStart, rangeEnd) {
+function getSummaryCalendarComboText(values, fields, mode) {
+  return values.map((value, index) => {
+    if (!value) return "";
+    if (mode === "emoji") return getSummaryCalendarText(value, "emoji") || getSummaryCalendarText(value, "text");
+    return getSummaryCalendarText(value, "text");
+  }).filter(Boolean).join(mode === "emoji" ? " " : " · ");
+}
+
+function drawSummaryCalendar(canvas, rows, dateField, aggregateFields, selectedCombinations, displayMode, rangeStart, rangeEnd) {
   const width = 1800;
   const margin = 44;
   const gapX = 24;
@@ -280,10 +312,11 @@ function drawSummaryCalendar(canvas, rows, dateField, valueField, selectedValues
   });
   orderedRows.forEach(row => {
     const day = summaryCalendarDateKey(row[dateField]);
-    const value = String(row[valueField] ?? "").trim();
-    if (!day || day < rangeStart || day > rangeEnd || !value || !selectedValues.has(value)) return;
+    const values = aggregateFields.map(field => String(row[field] ?? "").trim());
+    const combinationKey = JSON.stringify(values);
+    if (!day || day < rangeStart || day > rangeEnd || !values.some(Boolean) || !selectedCombinations.has(combinationKey)) return;
     if (!valuesByDay.has(day)) valuesByDay.set(day, []);
-    valuesByDay.get(day).push(value);
+    valuesByDay.get(day).push(values);
   });
 
   const weekdays = ["S", "M", "T", "W", "T", "F", "S"];
@@ -360,8 +393,8 @@ function drawSummaryCalendar(canvas, rows, dateField, valueField, selectedValues
         let itemX = cellX + 5;
         let itemRow = 0;
         let shown = 0;
-        for (const value of items) {
-          const emoji = getSummaryCalendarText(value, "emoji") || "•";
+        for (const combo of items) {
+          const emoji = getSummaryCalendarComboText(combo, aggregateFields, "emoji") || "•";
           const itemWidth = context.measureText(emoji).width + 1;
           if (itemX + itemWidth > cellX + cellWidth - 4) {
             itemRow++;
@@ -382,8 +415,8 @@ function drawSummaryCalendar(canvas, rows, dateField, valueField, selectedValues
         context.textAlign = "left";
         context.font = "10px system-ui, sans-serif";
         context.fillStyle = "#2456a6";
-        items.slice(0, 2).forEach((value, itemIndex) => {
-          context.fillText(clipCalendarText(context, getSummaryCalendarText(value, "text"), cellWidth - 10), cellX + 5, cellY + 31 + itemIndex * 13);
+        items.slice(0, 2).forEach((combo, itemIndex) => {
+          context.fillText(clipCalendarText(context, getSummaryCalendarComboText(combo, aggregateFields, "text"), cellWidth - 10), cellX + 5, cellY + 31 + itemIndex * 13);
         });
         if (items.length > 2) {
           context.fillStyle = "#667085";
